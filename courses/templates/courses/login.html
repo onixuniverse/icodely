@@ -1,0 +1,50 @@
+{% extends 'courses/login_base.html' %}
+{% load static %}
+
+{% block login_form %}
+
+    <div class="wrapper">
+        <form autocomplete="off" method="POST">
+            {% csrf_token %}
+            <h2>Авторизация</h2>
+            {% for field in form.visible_fields %}
+                <div class="input-group">
+                    {% if not forloop.last %}
+                        {{ field }}
+                        {{ field.label_tag }}
+
+                        {% if field.name == 'username' %}
+                        <span class="icon">
+                            <i class="fa-regular fa-user"></i>
+                        </span>
+                        {% elif field.name == 'password' %}
+                        <span class="icon" id="switch_password">
+                            <i class="far fa-eye-slash"></i>
+                        </span>
+                        {% endif %}
+
+                    <span class="line"></span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="check">
+             <label>{{ form.remember_me }} Запомнить меня</label>
+                <a href="#">Забыли пароль?</a>
+            </div>
+            <button type="submit">Войти</button>
+            <div class="register">
+                <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+            </div>
+        </form>
+    </div>
+    <script src="{% static 'js/login.js' %}"></script>
+<!--    {% if form.errors %}-->
+<!--        <section class="errors-container">-->
+<!--        {% for f, es in form.errors.items %}-->
+<!--            {% for e in es %}-->
+<!--                {{ e }}-->
+<!--            {% endfor %}-->
+<!--        {% endfor %}-->
+<!--        </section>-->
+<!--    {% endif %}-->
+{% endblock login_form %}

@@ -1,0 +1,23 @@
+{% extends 'courses/base.html' %}
+
+{% block page_name %}
+  {{ course.title }}
+{% endblock page_name %}
+
+{% block menu %}
+  <a href="{% url 'addlesson' course.pk %}">Добавить урок</a>
+{% endblock menu %}
+
+
+{% block page_title %}
+  {{ course.title }}
+{% endblock page_title %}
+
+{% block content %}
+  <p>{{ course.title }}</p>
+  <p>{{ course.description }}</p>
+  <p>{{ course.get }}</p>
+  {% for lesson in lessons %}
+    <p><a href="{% url 'lesson' course.pk lesson.pk %}">{{ lesson.title }}</a></p>
+  {% endfor %}
+{% endblock content %}

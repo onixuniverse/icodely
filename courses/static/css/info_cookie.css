@@ -1,0 +1,105 @@
+* {
+  font-family: Montserrat;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(to bottom, #ffffff, hsl(0, 72%, 54%));
+    flex-direction: column;
+    margin: 0;
+}
+
+h1{
+    font-size: 40px;
+}
+
+h3{
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+p{
+    font-size: 20px;
+}
+
+.cookie-group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cookie-group-title{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.cookie-group-form{
+    display: flex;
+    gap: 15px;
+    flex-direction: row;
+    margin-top: 20px;
+    height: 50px;
+}
+
+.wrapper{
+    display: flex;
+    columns: 2;
+    gap: 250px;
+}
+
+input{
+    width: 120px;
+    height: 50px;
+    background: hsl(0, 72%, 54%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 0.5s all;
+}
+
+input ~ .decline{
+    border: 1px black solid ;
+    color: black;
+    background: none;
+}
+
+th{
+    font-size: 20px;
+    font-weight: 400;
+    text-align: left;
+}
+
+input:hover{
+    background: black;
+}
+
+input:active{
+    opacity: 0.6;;
+}
+
+input ~ .decline:hover{
+    color: white;
+    background: black;
+}
+
+.cookie-group-title p{
+    margin: 0px 0px 13px;
+    font-size: 13px;
+    text-align: center;
+    color: rgba(115, 114, 114, 1)
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

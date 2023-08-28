@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="ru">
+<head>
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+    <link href="{% static 'css/store.css' %}" rel="stylesheet">
+    <link href="{% static 'css/transform.css' %}" rel="stylesheet">
+    {% block links %}{% endblock links %}
+
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+    <title>{% block page_name %}{{ title }}{% endblock page_name %}</title>
+</head>
+<body>
+
+    <header class="common_header">
+        <a href="#" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
+
+        <nav class="nav-links">
+            <a href="{% url 'index' %}" class="nav_btn_header">Главная<div class="line"></div></a>
+            <a href="{% url 'all_courses' %}" class="nav_btn_header">Все курсы<div class="line"></div></a>
+            <a href="{% url 'my_courses' %}" class="nav_btn_header">Мои курсы<div class="line"></div></a>
+            <a href="{% url 'deadline' %}" class="nav_btn_header">Дедлайны<div class="line"></div></a>
+        </nav>
+
+        <div class="account">
+            <a href="{% url 'myaccount' %}" class="to_acc">
+                <div class="acc_background"></div>
+                {% if user.is_authenticated %}
+                    {% if user.first_name or user.last_name %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% else  %}
+                        {{ user.username }}
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}">Войти</a>
+                {% endif %}
+            </a>
+        </div>
+
+        <div class="menu-hamburger">
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+        </div>
+    </header>
+
+    <div class="page">
+        {% block content %}
+
+        {% endblock content %}
+    </div>
+
+    <footer>
+        <div class="footer_nav">
+            <a href="#" class="hyperlink">
+                <p>Политика конфиденциальности</p>
+            </a>
+            <a href="#" class="hyperlink">
+                <p>Часто задаваемые вопросы</p>
+            </a>
+            <a href="#" class="hyperlink">
+                <img class="network_logo" src="instagram.png">
+                <p>/SCHOOL_ITEACHER_INST</p>
+            </a>
+            <a href="#" class="hyperlink">
+                <img class="network_logo" src="vk.png">
+                <p>/SCHOOL_ITEACHER_VK</p>
+            </a>
+        </div>
+    </footer>
+
+<script src="{% static 'js/responsive.js' %}"></script>
+
+</body>
+</html>

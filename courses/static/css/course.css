@@ -1,0 +1,91 @@
+.wrapper_step{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    z-index: 1;
+    background-color: rgba(218, 218, 218, 1);
+    padding: 0px 5px 5px 0px;
+    border-radius: 15px 0px 15px 0px;
+}
+
+.number_step{
+    font-size: 15px;
+    background: black;
+    color: white;
+    padding: 7px;
+    border-radius: 10px 0px 10px 0px;
+    width: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.name{
+    font-size: 18px;
+    font-weight: 600;
+    margin: 40px 20px 10px;
+    overflow: hidden;
+}
+
+.about_step{
+    font-size: 15px;
+    margin: 0px 20px 10px;
+    height: 85px;
+    overflow: hidden;
+}
+
+
+.wrapper_status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+.status{
+    position: absolute;
+    bottom: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background: rgb(84, 172, 68);
+    color: white;
+    height: 30px;
+    width: 140px;
+    border-radius: 15px 15px 0px 0px;
+    font-size: 13px;
+}
+
+.done{
+    background: rgb(105 157 95);
+    content: '';
+}
+
+.in_progress{
+    background: rgb(216, 150, 29);
+}
+
+.unavailable{
+    background: rgb(109, 108, 106);
+}
+
+
+@media (min-width: 370px) and (max-width: 539px) { 
+    .name{
+        font-size: 25px;
+        margin: 50px 20px 10px;
+    }
+
+    .status{
+        width: 165px;
+        height: 40px;
+        font-size: 15px;
+    }
+
+    .number_step{
+        padding: 12px;
+        font-size: 17px;
+    }
+}

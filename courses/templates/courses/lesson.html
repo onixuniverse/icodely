@@ -1,0 +1,26 @@
+{% extends 'courses/base.html' %}
+
+{% block page_name %}
+  {{ lesson.title }}
+{% endblock page_name %}
+
+{% block page_title %}
+  {{ lesson.title }}
+{% endblock page_title %}
+
+{% block content %}
+  <p>{{ lesson.title }}</p>
+  <p>{{ lesson.content }}</p>
+
+
+<!--VIDEO EXAMPLE-->
+    {% if lesson.video %}
+        <br><br>
+        <video width='400' controls>
+        <source src='{{ lesson.video.url }}' type='video/mp4'>
+        Your browser does not support the video tag.
+        </video>
+        <br><br>
+        </p>
+    {% endif %}
+{% endblock content %}

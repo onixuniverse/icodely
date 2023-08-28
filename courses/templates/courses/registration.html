@@ -1,0 +1,43 @@
+{% extends 'courses/login_base.html' %}
+{% load static %}
+
+{% block login_form %}
+    <div class="wrapper_reg">
+        <form autocomplete="off" method="POST">
+            {% csrf_token %}
+            <h2>Регистрация</h2>
+            {% for field in form.visible_fields %}
+
+                <div class="input-group">
+                    {{ field }}
+                    {{ field.label_tag }}
+
+                    {% if field.name == 'username' %}
+                    <span class="icon">
+                        <i class="fa-regular fa-user"></i>
+                    </span>
+                    {% elif field.name == 'password1' or  field.name == 'password2'%}
+                    <span class="icon" id="switch_password">
+                        <i class="far fa-eye-slash"></i>
+                    </span>
+                    {% endif %}
+
+                    <span class="line"></span>
+                </div>
+            {% endfor %}
+            <button type="submit">Подтвердить</button>
+            <div class="register">
+                <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+            </div>
+        </form>
+    </div>
+    {% if form.errors %}
+        <section class="errors-container">
+        {% for f, es in form.errors.items %}
+            {% for e in es %}
+                {{ e }}
+            {% endfor %}
+        {% endfor %}
+        </section>
+    {% endif %}
+{% endblock login_form %}

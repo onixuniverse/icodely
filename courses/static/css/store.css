@@ -1,0 +1,201 @@
+* {
+    font-family: Montserrat;
+}
+
+.wrapper_courses{
+    max-width: 800px;
+    display: inline-flex;
+    padding: 40px 0px;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.course{
+    width: 250px;
+    height: 300px;
+    border-radius: 15px;
+    background: #D9D9D9;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: relative;
+}
+
+.background_course{
+    width: 228px;
+    height: 210px;
+    border-radius: 10px;
+    background: #b7b8d1;
+    color:black;
+    position: relative;
+}
+
+.info_course{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 21px 16px;
+}
+
+.info_course .name{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.info_course .author{
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.steps_count{
+    height: 40px;
+    width: 114px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 500;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+}
+
+.cost{
+    position: absolute;
+    right: 0%;
+    bottom: 0%;
+    width: 114px;
+    height: 40px;
+    border-radius: 10px 0px 10px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    background: rgb(0, 0, 0);
+    color: white;
+}
+
+.course_container_buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.course_container_buttons button{
+    width: 110px;
+    height: 50px;
+    border-radius: 10px;   
+}
+
+.btn_details{
+    border: 1px solid #000;
+    background-color: #D9D9D9;
+    color: black;
+}
+
+.btn_buy_course{
+    background-color: hsl(0, 72%, 54%);
+    color: white;
+    border: none;
+}
+
+.yellow{
+    background: rgba(237, 212, 165, 1);
+}
+
+.blue{
+    background: rgba(178, 205, 211, 1);
+}
+
+.pink{
+    background: rgba(255, 184, 201, 1);
+}
+
+@media (max-width: 800px) { 
+    .content{
+        max-width: 600px;
+    }
+    .wrapper_courses{
+        justify-content: center;
+    }
+}
+
+
+@media (max-width: 600px) { 
+    .content{
+        margin: 0px 10px auto;
+    }
+    .wrapper_courses{
+        gap: 10px;
+    }
+}
+
+@media (min-width: 370px) and (max-width: 539px) { 
+    .course{
+        width: 350px;
+        height: 400px;
+    }
+
+    .background_course{
+        width: 316px;
+        height: 293px;
+    }
+
+    .info_course{
+        padding: 25px 20px;
+        gap: 12px;
+    }
+
+    .info_course .name{
+        font-size: 25px;
+    }
+
+    .info_course .author{
+        font-size: 15px;
+    }
+
+    .steps_count{
+        width: 158px;
+        height: 53px;
+        font-size: 17px;
+    }
+
+    .cost{
+        width: 158px;
+        height: 53px;
+        font-size: 17px;
+    }
+
+    .course_container_buttons{
+        gap: 10px;
+    }
+
+    .course_container_buttons button{
+        width: 153px;
+        height: 58px;
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 359px) {
+    .course_container_buttons button{
+        font-size: 13px;
+    }
+}
+
+
+
+
+
+
+
+
+
+

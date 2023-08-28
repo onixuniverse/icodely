@@ -1,0 +1,35 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+
+{% block links %}
+    <link href="{% static 'css/my_courses.css' %}" rel="stylesheet">
+    <link href="{% static 'css/course.css' %}" rel="stylesheet">
+{% endblock links %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block content %}
+    <div class="content">
+        <section class="wrapper_courses">
+            {% for lesson in lessons %}
+                <section class="course">
+                    <div class="wrapper_step">
+                        <div class="number_step">Шаг {{ forloop.counter }}</div>
+                    </div>
+                    <div class="background_course">
+                        <div class="name">{{ lesson.title }}</div>
+                        <div class="about_step">{{ lesson.description }}</div>
+                        <div class="wrapper_status">
+                            <div class="status done">{{ lesson_status }}</div>
+                        </div>
+                    </div>
+                    <a href="{% url 'lesson' course.pk lesson.pk %}">
+                        <button class="btn_start">Выполнить</button>
+                    </a>
+                </section>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock content %}

@@ -8,10 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 SECRET_KEY = os.getenv("TOKEN")
 
-DEBUG = False
-ONLINE_TECHNICAL_WORKS = True
+DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["icodely.ru"]
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -100,4 +99,3 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/uploads'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-

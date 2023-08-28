@@ -8,7 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 SECRET_KEY = os.getenv("TOKEN")
 
-DEBUG = True
+DEBUG = False
+ONLINE_TECHNICAL_WORKS = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -23,7 +24,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "courses",
     "examination",
-    "captcha",
+    # "captcha",
     "cookie_consent",
 ]
 
@@ -100,13 +101,3 @@ MEDIA_ROOT = BASE_DIR / 'media/uploads'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# IMPORTANT: Remove after debug
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
-
-# Captcha keys
-RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
-RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'

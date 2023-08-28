@@ -8,7 +8,6 @@ from icodely import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("courses.urls"), name="courses"),
-    path("exams/", include("examination.urls"), name="exam"),
     path('cookies/', include('cookie_consent.urls')),
 ]
 
@@ -16,7 +15,7 @@ handler404 = page_not_found_404
 
 if settings.DEBUG:
     urlpatterns = [
-        # ...
+        path("exams/", include("examination.urls"), name="exam"),
         path("__debug__/", include("debug_toolbar.urls")),
     ] + urlpatterns
 

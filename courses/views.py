@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -260,4 +260,4 @@ class CrateNewInviteLink(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, Crea
 
 # Error handler
 def page_not_found_404(request, exception):
-    return HttpResponse("<h1>Page not found!!!</h1>")
+    return HttpResponseNotFound("<h1>404</h1><h2>Page not found!</h2>")

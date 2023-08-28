@@ -10,7 +10,7 @@ SECRET_KEY = os.getenv("TOKEN")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["icodely.ru"]
+ALLOWED_HOSTS = ["icodely.ru", "localhost"]
 
 INSTALLED_APPS = [
     'jazzmin',

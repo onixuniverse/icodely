@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "courses",
     "examination",
-    "captcha",
+    # "captcha",
     "cookie_consent",
 ]
 

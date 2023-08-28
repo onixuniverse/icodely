@@ -9,6 +9,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("TOKEN")
 
 DEBUG = False
+ONLINE_TECHNICAL_WORKS = True
 
 ALLOWED_HOSTS = ["icodely.ru"]
 

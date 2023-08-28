@@ -10,7 +10,7 @@ SECRET_KEY = os.getenv("TOKEN")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["icodely.ru"]
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -99,14 +99,3 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/uploads'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# IMPORTANT: Remove after debug
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
-
-# Captcha keys
-RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
-RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'

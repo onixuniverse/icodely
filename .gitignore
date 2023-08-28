@@ -2,7 +2,6 @@ media/
 venv/
 migrations/
 templates/courses/old/
-static/
 
 
 # Byte-compiled / optimized / DLL files

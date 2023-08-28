@@ -12,7 +12,7 @@ urlpatterns = [
     path('cookies/', include('cookie_consent.urls')),
 ]
 
-handler404 = page_not_found_404
+handler404 = "courses.views.page_not_found_404"
 
 if settings.DEBUG:
     urlpatterns = [

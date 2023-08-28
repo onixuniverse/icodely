@@ -2,138 +2,98 @@
 {% load static %}
 <html lang="ru">
 <head>
+     <link href="{% static 'css/app.css' %}" rel="stylesheet">
+    <link href="{% static 'css/transform.css' %}" rel="stylesheet">
+    <link href="{% static 'css/mainpage.css' %}" rel="stylesheet">
+
+    <link rel="shortcut icon" href="logo.ico" type="image/x-icon">
     <meta charset="UTF-8">
-    <title>iTeacher</title>
-    <style type="text/css" media="screen">
-      .cookie_agreement{
-        position: fixed;
-        right: 25px;
-        bottom: 25px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        background: #DADADA;
-        color: black;
-        font-size: 15px;
-        border-radius: 15px;
-        width: 250px;
-        height: 185px;
-        padding: 15px;
-        opacity: 1;
-<!--        transform: translateX(400px);-->
-<!--        transition: 0.5s all;-->
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .cookie_agreement.active{
-            opacity: 1;
-            transition: 0.5s all;
-            transform: translateX(0px);
-        }
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
-        .cookie_agreement p{
-            color: black;
-            margin: 0%;
-            font-weight: 400;
-            text-align: left;
-        }
-
-        .cookie_agreement h4{
-            font-size: 20px;
-            text-align: center;
-            font-weight: 600;
-            text-align: left;
-            margin: 0;
-        }
-
-        .cookie_agreement .hyperlink{
-            color: hsl(0, 72%, 54%);
-        }
-
-        .btn_cookie{
-            appearance: button;
-            background: hsl(0, 72%, 54%);
-            width: 170px;
-            height: 50px;
-            align-items: center;
-            justify-content: center;
-            font-size: 15px;
-            border-radius: 15px;
-            border: 0;
-            display:flex;
-        }
-
-        .btn_cookie_text {
-            color: white;
-        }
-
-        .cookie_agreement .hyperlink:hover{
-            text-decoration: underline;
-        }
-        a {
-           text-decoration: none;
-        }
-    </style>
+    <title>{% block page_name %}{{ title }}{% endblock page_name %}</title>
 </head>
+
 <body>
-    <h1><a href="{% url 'all_courses' %}">Все курсы</a></h1>
-    <h1><a href="{% url 'my_courses' %}">Мои курсы</a></h1>
-    <h1><a href="{% url 'deadline' %}">Дедлайны</a></h1>
-    <br>
-    {% if user.is_authenticated %}
-        <h1><a href="{% url 'myaccount' %}">{{ user.first_name }} {{ user.last_name }} <br> username: {{ user.username }}</a></h1>
-    {% else %}
-        <h1><a href="{% url 'login' %}">Войти</a></h1>
-    {% endif %}
+    <div class="page">
+        
+        <header class="common_header">
+            <a href="{% url 'index' %}" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
+        </header>
 
-    <footer>
-        <script type="text/javascript" src="{% static 'cookie_consent/cookiebar.js' %}"></script>
 
-        {% load cookie_consent_tags %}
-        {% if request|cookie_consent_enabled %}
-        {% not_accepted_or_declined_cookie_groups request as cookie_groups %}
+        <div class="content_mainpage">
+            <nav>
+                <a href="{% url 'all_courses' %}">
+                    <div class="wrapper">
+                        <div class = "backplate">
+                            <img class="fan_picture" src="{% static 'images/sticker_1.png' %}">
+                            <div class="caption">Все курсы</div>
+                            <div class="description">Хочешь изучить что-то новое? Тогда тебе сюда!</div>
+                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
+                        </div>
+                    </div>
+                </a>
 
-        {% if cookie_groups %}
+                <a href="{% url 'my_courses' %}">
+                    <div class="wrapper">
+                        <div class = "backplate">
+                            <img class="fan_picture" src="{% static 'images/sticker_2.png' %}">
+                            <div class="caption">Мои курсы</div>
+                            <div class="description">Все твои курсы хранятся здесь</div>
+                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
+                        </div>
+                    </div>
+                </a>
 
-            {% url "cookie_consent_cookie_group_list" as url_cookies %}
+                <a href="{% url 'deadline' %}">
+                    <div class="wrapper">
+                        <div class = "backplate">
+                            <img class="fan_picture" src="{% static 'images/sticker_3.png' %}">
+                            <div class="caption">Дедлайны</div>
+                            <div class="description">Проследи за сроком выполнения заданий</div>
+                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
+                        </div>
+                    </div>
+                </a>
 
-            {% cookie_consent_accept_url cookie_groups as url_accept %}
+                <a href="{% url 'myaccount' %}">
+                    <div class="wrapper">
+                        <div class = "backplate">
+                            <img class="fan_picture" src="{% static 'images/sticker_4.png' %}">
+                            <div class="caption">Аккаунт</div>
+                            <div class="description">Манипуляции</div>
+                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
+                        </div>
+                    </div>
+                </a>
+                
+            </nav>
+        </div> 
+       
 
-            {% cookie_consent_decline_url cookie_groups as url_decline %}
+        <footer>
+            <div class="footer_nav">
+                <div class="hyperlink">
+                    <p>Политика конфиденциальности</p>
+                </div>
+                <div class="hyperlink">
+                    <p>Часто задаваемые вопросы</p>
+                </div>
+                <div class="hyperlink">
+                    <img class="network_logo" src="instagram.png">
+                    <p>/SCHOOL_ITEACHER_INST</p>
+                </div>
+                <div class="hyperlink">
+                    <img class="network_logo" src="vk.png">
+                    <p>/SCHOOL_ITEACHER_VK</p>
+                </div>     
+            </div>
+        </footer>
+    </div>
 
-            <script type="text/javascript">
-                var cookie_groups = [];
-                {% for cookie_group in cookie_groups %}
-                cookie_groups.push("{{ cookie_group.varname }}");
-                {% endfor %}
-                function ready(fn) {
-                if (document.readyState != 'loading') {
-                fn();
-                } else if (document.addEventListener) {
-                document.addEventListener('DOMContentLoaded', fn);
-                } else {
-                document.attachEvent('onreadystatechange', function() {
-                if (document.readyState != 'loading')
-                fn();
-                });
-                }
-                }
-                ready(function() {
-                    showCookieBar({
-                        content: "{% filter escapejs %}{% with cookie_groups=cookie_groups|join:", " %}<div class="cookie_agreement"><h4>Мы используем файлы cookie</h4><p>Оставаясь с нами, вы соглашаетесь на использование <a class="hyperlink" href="{{ url_cookies }}">файлов cookie</a></p><a class="btn_cookie cc-cookie-accept" href="{{ url_accept }}"><div class="btn_cookie_text">Ок</div></a></div>{% endwith %}{% endfilter %}",
-
-                        cookie_groups: cookie_groups,
-                        cookie_decline: "{% get_decline_cookie_groups_cookie_string request cookie_groups %}",
-                        beforeDeclined: function() {
-                        document.cookie = "{% get_decline_cookie_groups_cookie_string request cookie_groups %}";
-                        }
-                    });
-                });
-            </script>
-        {% endif %}
-        {% endif %}
-
-    </footer>
-<!--    <script src="{% static 'js/cookies_show.js' %}"></script>-->
-  </body>
+    <script src="{% static 'js/responsive.js' %}"></script>
+</body>
 </html>

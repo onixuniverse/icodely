@@ -260,4 +260,7 @@ class CrateNewInviteLink(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, Crea
 
 # Error handler
 def page_not_found_404(request, exception):
-    return HttpResponseNotFound("<h1>404</h1><h2>Page not found!</h2>")
+    context = {
+        "title": "Страница не найдена" + TITLE_WITH_DOT
+    }
+    return render(request, "courses/404.html", context=context)

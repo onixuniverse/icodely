@@ -263,4 +263,6 @@ def page_not_found_404(request, exception):
     context = {
         "title": "Страница не найдена" + TITLE_WITH_DOT
     }
-    return render(request, "courses/404.html", context=context)
+    return render(request, "courses/404.html", context=context, status=404)
+
+

@@ -48,7 +48,8 @@ class Lesson(models.Model):
     description = models.TextField(max_length=63, verbose_name="Описание шага урока")
     title = models.CharField(max_length=63, verbose_name="Название шага урока")
     content = models.TextField(max_length=4095, verbose_name="Контент шага урока")
-    video = models.FileField(upload_to="lessons/video", default=None, blank=True, null=True, verbose_name="Видео")
+    video_youtube = models.CharField(max_length=127, default=None, blank=True, null=True,
+                                     verbose_name="Ссылка на видео с Youtube")
 
     class Meta:
         verbose_name = "Урок"

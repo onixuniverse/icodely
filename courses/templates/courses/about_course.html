@@ -1,0 +1,21 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+
+{% block links %}
+    <link href="{% static 'css/my_courses.css' %}" rel="stylesheet">
+    <link href="{% static 'css/course.css' %}" rel="stylesheet">
+{% endblock links %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block content %}
+    <div class="content">
+        <h2>{{ course.title }}</h2>
+        <br>
+        <h3>{{ course.description }}</h3>
+
+
+    </div>
+{% endblock content %}

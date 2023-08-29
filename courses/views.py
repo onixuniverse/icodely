@@ -9,11 +9,10 @@ from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import AddCourseForm, AddLessonForm, RegistrationUserForm, LoginUserForm
 from .models import Course, Lesson, UserToCourse
-from .mixins import MenuMixin, GroupRequiredMixin
-
+from .mixins import MenuMixin, GroupRequiredMixin, UserToCourseAccessMixin
 
 TITLE = "icodely"
-TITLE_WITH_DOT = " • icodely"
+TITLE_WITH_DOT = " • " + TITLE
 
 
 def to_courses_page(request):
@@ -23,7 +22,7 @@ def to_courses_page(request):
 
 # Index page
 def index_page(request):
-    return render(request, "courses/index.html")
+    return render(request, "courses/index.html", {"title": TITLE})
 
 
 # Account
@@ -112,7 +111,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
 
 # Course & Lessons View
-class MyCourses(LoginRequiredMixin, MenuMixin, ListView):
+class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
     """List of all available courses"""
     model = Course
     template_name = "courses/my_courses.html"
@@ -154,7 +153,7 @@ class TeachersCourses(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, ListVie
         return available_courses
 
 
-class AllCourses(LoginRequiredMixin, MenuMixin, ListView):
+class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
     model = Course
     template_name = "courses/courses_list.html"
     context_object_name = "courses"
@@ -170,7 +169,7 @@ class AllCourses(LoginRequiredMixin, MenuMixin, ListView):
         return Course.objects.filter(is_available=True).select_related("author")
 
 
-class ShowCourse(LoginRequiredMixin, MenuMixin, DetailView):
+class CourseLessonsDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
     """Page of the selected course"""
     model = Course
     template_name = "courses/course.html"
@@ -179,9 +178,25 @@ class ShowCourse(LoginRequiredMixin, MenuMixin, DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=Course.title,
+        c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT,
                                       lessons=Lesson.objects.filter(course_id=self.kwargs['course_id']),
-                                      lesson_status="Выполнено TEST")
+                                      lesson_status="N/A")
+
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_object(self, query_set=None):
+        return Course.objects.get(id=self.kwargs['course_id'])
+
+
+class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
+    model = Course
+    template_name = "courses/about_course.html"
+    context_object_name = "course"
+    login_url = reverse_lazy("login")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT)
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -198,11 +213,12 @@ class ShowLesson(LoginRequiredMixin, MenuMixin, DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context()
+        c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT)
 
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_object(self, query_set=None):
+        print(self.kwargs)
         return Lesson.objects.get(id=self.kwargs['lesson_id'])
 
 
@@ -216,7 +232,7 @@ class AddCourse(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить курс")
+        c_def = self.get_user_context(title="Добавить курс" + TITLE_WITH_DOT)
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -237,7 +253,7 @@ class AddLesson(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить урок")
+        c_def = self.get_user_context(title="Добавить урок" + TITLE_WITH_DOT)
 
         return dict(list(context.items()) + list(c_def.items()))
 

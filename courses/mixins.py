@@ -1,5 +1,6 @@
 from django.core.exceptions import PermissionDenied
 
+from courses.models import UserToCourse
 
 menu = [{'text': 'Главная', 'url_name': 'index'},
         {'text': 'Добавить курс', 'url_name': 'addcourse'},
@@ -45,6 +46,17 @@ class GroupRequiredMixin:
         return super(GroupRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
+class UserToCourseAccessMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise PermissionDenied
+        else:
+            user_to_course_access = UserToCourse.objects.filter(user=request.user, course_id=kwargs['course_id'])
+
+            if not user_to_course_access:
+                raise PermissionDenied
+
+        return super(UserToCourseAccessMixin, self).dispatch(request, *args, **kwargs)
 
 
 class StudentMixin:

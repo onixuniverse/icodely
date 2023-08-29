@@ -32,7 +32,7 @@ html, body{
 /* header */
 .common_header{
     height: 80px;
-    background: #FF8218;
+    background: rgba(255, 129, 22, 1);;
     position: relative; 
     display: flex;
     align-items: center;
@@ -40,7 +40,7 @@ html, body{
     flex-direction: row;
 }
 
-.common_header .logo{
+.logo{
     width: 200px;
     position: relative;
 }
@@ -56,6 +56,7 @@ html, body{
     height: 50px;
     border-radius: 100%;
     background-color: white;
+    overflow: hidden;
 }
 
 .common_header .account{
@@ -79,13 +80,13 @@ html, body{
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: row;
     width: 800px;
     gap: 32px;
     font-size: 20px;
     font-weight: 500;
     padding: 0px 150px;
-    justify-content: center
 }
 
 .nav_btn_header{
@@ -153,7 +154,7 @@ html, body{
 footer{
     width: 100%;
     height: 120px;
-    background: #FF8218;
+    background: rgba(255, 129, 22, 1);
     align-items: center;
     display: flex;
     justify-content: center;
@@ -405,7 +406,7 @@ button{
 
 
 @media screen and (max-width: 1440px){
-    .common_header .logo{
+    .logo{
         width: 160px;
     }
 
@@ -418,8 +419,20 @@ button{
     }
 }
 
-@media screen and (max-width: 1280px){
-    .common_header .logo{
+@media screen and (max-width: 1350px){
+    .nav-links{
+        padding: 0px 0px;
+    }
+}
+
+@media screen and (max-width: 1024px){
+    .nav-links{
+        padding: 0px 0px;
+        width: 600px;
+        font-size: 17px;
+    }
+
+    .logo{
         width: 140px;
     }
 
@@ -427,12 +440,17 @@ button{
         width: 140px;
     }
 
-    .nav-links{
-        padding: 0px 55px;
+    .to_acc{
+        font-size: 11px;
+    }
+
+    .common_header .acc_background{
+        width: 45px;
+        height: 45px;
     }
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 900px){
     .navbar{
         padding: 0%;
     }
@@ -489,8 +507,8 @@ button{
         display: none;
     }
 
-    .common_header .logo{
-        width: 150px;
+    .logo{
+        width: 130px;
         margin-left: 20px;
     }
 

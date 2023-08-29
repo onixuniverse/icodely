@@ -3,27 +3,37 @@
 
 {% block login_form %}
     <div class="wrapper_reg">
-        <form autocomplete="off" method="POST">
+        <form autocomplete="off" method="POST" id="registerForm">
             {% csrf_token %}
             <h2>Регистрация</h2>
             {% for field in form.visible_fields %}
 
                 <div class="input-group">
+
                     {{ field }}
                     {{ field.label_tag }}
 
                     {% if field.name == 'username' %}
-                    <span class="icon">
-                        <i class="fa-regular fa-user"></i>
-                    </span>
-                    {% elif field.name == 'password1' or  field.name == 'password2'%}
-                    <span class="icon" id="switch_password">
-                        <i class="far fa-eye-slash"></i>
-                    </span>
+                        <span class="icon">
+                            <i class="fa-regular fa-user"></i>
+                        </span>
+                    {% elif field.name == 'email' %}
+                        <span class="icon">
+                            <i class="fa-regular fa-envelope"></i>
+                        </span>
+                    {% elif field.name == 'password1' %}
+                        <span class="icon" id="toggle_password1">
+                            <i class="far fa-eye-slash"></i>
+                        </span>
+                    {% elif field.name == 'password2' %}
+                        <span class="icon" id="toggle_password2">
+                            <i class="far fa-eye-slash"></i>
+                        </span>
                     {% endif %}
 
                     <span class="line"></span>
                 </div>
+            {{ field.errors }}
             {% endfor %}
             <button type="submit">Подтвердить</button>
             <div class="register">
@@ -31,13 +41,4 @@
             </div>
         </form>
     </div>
-    {% if form.errors %}
-        <section class="errors-container">
-        {% for f, es in form.errors.items %}
-            {% for e in es %}
-                {{ e }}
-            {% endfor %}
-        {% endfor %}
-        </section>
-    {% endif %}
 {% endblock login_form %}

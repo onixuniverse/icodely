@@ -204,7 +204,7 @@ class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
         return Course.objects.get(id=self.kwargs['course_id'])
 
 
-class ShowLesson(LoginRequiredMixin, MenuMixin, DetailView):
+class ShowLesson(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
     """Page of the selected lesson in the course"""
     model = Lesson
     template_name = "courses/lesson.html"

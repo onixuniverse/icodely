@@ -6,10 +6,11 @@ from courses.views import page_not_found_404
 from icodely import settings
 
 urlpatterns = [
+    path("", include("courses.urls", namespace="courses")),
     path("admin/", admin.site.urls),
-    path("", include("courses.urls"), name="courses"),
-    path("exams/", include("examination.urls"), name="exam"),
-    path('cookies/', include('cookie_consent.urls')),
+    path("exams/", include("examination.urls", namespace="examination")),
+    path("profile/", include("usermanager.urls", namespace="usermanager")),
+    path("cookies/", include('cookie_consent.urls')),
 ]
 
 handler404 = "courses.views.page_not_found_404"

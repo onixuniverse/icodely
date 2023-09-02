@@ -27,26 +27,28 @@
 <body>
 
     <header class="common_header">
-        <a href="{% url 'index' %}" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
+        <a href="{% url 'courses:index' %}" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
 
         <nav class="nav-links">
-            <a href="{% url 'index' %}" class="nav_btn_header">Главная<div class="line"></div></a>
-            <a href="{% url 'all_courses' %}" class="nav_btn_header">Все курсы<div class="line"></div></a>
-            <a href="{% url 'my_courses' %}" class="nav_btn_header">Мои курсы<div class="line"></div></a>
-            <a href="{% url 'deadline' %}" class="nav_btn_header">Дедлайны<div class="line"></div></a>
+            <a href="{% url 'courses:index' %}" class="nav_btn_header">Главная<div class="line"></div></a>
+            <a href="{% url 'courses:all_courses' %}" class="nav_btn_header">Все курсы<div class="line"></div></a>
+            <a href="{% url 'courses:my_courses' %}" class="nav_btn_header">Мои курсы<div class="line"></div></a>
+            <a href="{% url 'courses:deadline' %}" class="nav_btn_header">Дедлайны<div class="line"></div></a>
         </nav>
 
         <div class="account">
-            <a href="{% url 'myaccount' %}" class="to_acc">
-                <div class="acc_background"></div>
+            <a href="{% url 'usermanager:profile' %}" class="to_acc">
+                <div class="header_avatar">
+                    <img src="{{ user.avatar.url }}" alt="{{ user.avatar }}" class="avatar">
+                </div>
                 {% if user.is_authenticated %}
                     {% if user.first_name or user.last_name %}
                         {{ user.first_name }} {{ user.last_name }}
                     {% else  %}
-                        {{ user.username }}
+                        {{ user.email }}
                     {% endif %}
                 {% else %}
-                    <a href="{% url 'login' %}">Войти</a>
+                    <a href="{% url 'usermanager:login' %}">Войти</a>
                 {% endif %}
             </a>
         </div>

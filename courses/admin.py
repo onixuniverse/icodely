@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import *
 
 
@@ -18,11 +19,10 @@ class LessonAdmin(admin.ModelAdmin):
 
 @admin.register(InviteUrl)
 class InviteUrlAdmin(admin.ModelAdmin):
-    list_display = ("invite_uuid", "course", "created_by")
+    list_display = ("url", "course", "created_by")
+    list_display_links = ("course", "created_by")
 
 
 @admin.register(UserToCourse)
 class UserToCourseAdmin(admin.ModelAdmin):
     list_display = ("invite_uuid", "user", "course")
-
-

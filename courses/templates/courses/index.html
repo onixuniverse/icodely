@@ -31,13 +31,13 @@
     <div class="page">
         
         <header class="common_header">
-            <a href="{% url 'index' %}" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
+            <a href="{% url 'courses:index' %}" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
         </header>
 
 
         <div class="content_mainpage">
             <nav>
-                <a href="{% url 'all_courses' %}">
+                <a href="{% url 'courses:all_courses' %}">
                     <div class="wrapper">
                         <div class = "backplate">
                             <img class="fan_picture" src="{% static 'images/sticker_1.png' %}">
@@ -48,7 +48,7 @@
                     </div>
                 </a>
 
-                <a href="{% url 'my_courses' %}">
+                <a href="{% url 'courses:my_courses' %}">
                     <div class="wrapper">
                         <div class = "backplate">
                             <img class="fan_picture" src="{% static 'images/sticker_2.png' %}">
@@ -59,7 +59,7 @@
                     </div>
                 </a>
 
-                <a href="{% url 'deadline' %}">
+                <a href="{% url 'courses:deadline' %}">
                     <div class="wrapper">
                         <div class = "backplate">
                             <img class="fan_picture" src="{% static 'images/sticker_3.png' %}">
@@ -70,7 +70,7 @@
                     </div>
                 </a>
 
-                <a href="{% url 'myaccount' %}">
+                <a href="{% url 'usermanager:profile' %}">
                     <div class="wrapper">
                         <div class = "backplate">
                             <img class="fan_picture" src="{% static 'images/sticker_4.png' %}">

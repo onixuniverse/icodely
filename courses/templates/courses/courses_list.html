@@ -30,11 +30,11 @@
                     </div>
 
                     <nav class="course_container_buttons">
-                        <a href="{% url 'about_course' course.pk %}">
+                        <a href="{% url 'courses:about_course' course.pk %}">
                             <button class="btn_details">Подробнее</button>
                         </a>
 
-                        <a href="{% url 'about_course' course.pk %}">
+                        <a href="{% url 'courses:about_course' course.pk %}">
                             <button class="btn_buy_course">Купить</button>
                         </a>
                     </nav>

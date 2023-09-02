@@ -1,14 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 
-from .forms import AddCourseForm, AddLessonForm, RegistrationUserForm, LoginUserForm
-from .models import Course, Lesson, UserToCourse
+from .forms import AddCourseForm, AddLessonForm
+from .models import Course, Lesson, UserToCourse, InviteUrl
 from .mixins import MenuMixin, GroupRequiredMixin, UserToCourseAccessMixin
 
 TITLE = "icodely"
@@ -25,98 +23,13 @@ def index_page(request):
     return render(request, "courses/index.html", {"title": TITLE})
 
 
-# Account
-class RegistrationUser(MenuMixin, CreateView):
-    """User registration page"""
-    form_class = RegistrationUserForm
-    template_name = "courses/registration.html"
-    success_url = reverse_lazy("login")
-
-    def get_user_context(self, object_list=None, **kwargs):
-        context = super().get_user_context(**kwargs)
-        c_def = self.get_user_context(title="Регистрация")
-
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.method.lower() in self.http_method_names:
-            handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
-        else:
-            handler = self.http_method_not_allowed
-
-        if request.user.is_authenticated:
-            handler = HttpResponseRedirect(reverse_lazy("login"))
-
-            return handler
-
-        return handler(request, *args, **kwargs)
-
-
-class LoginUser(MenuMixin, LoginView):
-    """User login page"""
-    form_class = LoginUserForm
-    template_name = "courses/login.html"
-
-    def form_valid(self, form):
-        remember_me = form.cleaned_data['remember_me']
-        if not remember_me:
-            self.request.session.set_expiry(0)
-            self.request.session.modified = True
-
-        return super(LoginUser, self).form_valid(form)
-
-    def get_user_context(self, object_list=None, **kwargs):
-        context = super().get_user_context(**kwargs)
-        c_def = self.get_user_context(title="Авторизация")
-
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def get_success_url(self):
-        to = "/"
-
-        if self.request.GET:
-            to = self.request.GET['next']
-
-        return to
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.method.lower() in self.http_method_names and not request.user.is_authenticated:
-            handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
-        else:
-            handler = self.http_method_not_allowed
-
-        if request.user.is_authenticated:
-            handler = HttpResponseRedirect(reverse_lazy("index"))
-
-            return handler
-
-        return handler(request, *args, **kwargs)
-
-
-class LogoutUser(LoginRequiredMixin, LogoutView):
-    login_url = reverse_lazy("login")
-
-    def get_success_url(self):
-        return reverse("index")
-
-
-class ProfileView(LoginRequiredMixin, DetailView):
-    model = User
-    template_name = "courses/account.html"
-    context_object_name = "user"
-    login_url = reverse_lazy("login")
-
-    def get_object(self, queryset=None):
-        return User.objects.get(pk=self.request.user.id)
-
-
 # Course & Lessons View
 class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
     """List of all available courses"""
     model = Course
     template_name = "courses/my_courses.html"
     context_object_name = "courses"
-    login_url = reverse_lazy("login")
+    login_url = reverse_lazy("usermanager:login")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -138,7 +51,7 @@ class TeachersCourses(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, ListVie
     model = Course
     template_name = "courses/old_courses_list.html.html"
     context_object_name = "courses"
-    login_url = reverse_lazy("login")
+    login_url = reverse_lazy("usermanager:login")
     group_required = [u'teacher']
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -157,7 +70,7 @@ class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
     model = Course
     template_name = "courses/courses_list.html"
     context_object_name = "courses"
-    login_url = reverse_lazy("login")
+    login_url = reverse_lazy("usermanager:login")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -174,7 +87,7 @@ class CourseLessonsDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuM
     model = Course
     template_name = "courses/course.html"
     context_object_name = "course"
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy("usermanager:login")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -192,7 +105,7 @@ class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
     model = Course
     template_name = "courses/about_course.html"
     context_object_name = "course"
-    login_url = reverse_lazy("login")
+    login_url = reverse_lazy("usermanager:login")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -209,7 +122,7 @@ class ShowLesson(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailV
     model = Lesson
     template_name = "courses/lesson.html"
     context_object_name = "lesson"
-    login_url = reverse_lazy("login")
+    login_url = reverse_lazy("usermanager:login")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -227,7 +140,7 @@ class AddCourse(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
     """Page form with adding a new course"""
     form_class = AddCourseForm
     template_name = "courses/add_course.html"
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy("usermanager:login")
     group_required = [u"teacher"]
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -248,7 +161,7 @@ class AddLesson(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
     """Page of adding a new lesson in a course"""
     form_class = AddLessonForm
     template_name = "courses/add_lesson.html"
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy("usermanager:login")
     group_required = [u"teacher"]
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -270,11 +183,38 @@ class DeadlineView(View):
 
 
 # Invite links handlers
-class CrateNewInviteLink(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
-    pass
+class InviteView(LoginRequiredMixin, View):
+    model = InviteUrl
+
+    def get_success_url(self):
+        to = "/"
+
+        print(self.request.GET)
+        if self.request.GET:
+            to = self.request.GET["url"]
+
+        return to
 
 
-# Error handler
+def invite_redirect(request):
+    invite = InviteUrl.objects.get(invite_uuid=request.GET["url"])
+
+    if invite:
+        try:
+            exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk)
+        except:
+            exist_access_to_course = None
+
+        if not exist_access_to_course:
+            new_access_to_course = UserToCourse(invite_uuid=invite, user=request.user, course=invite.course)
+            new_access_to_course.save()
+
+            return HttpResponseRedirect(reverse("courses:course", args=[invite.course.id]))
+
+    return HttpResponseRedirect(reverse("courses:index"))
+
+
+# Errors handler
 def page_not_found_404(request, exception):
     context = {
         "title": "Страница не найдена" + TITLE_WITH_DOT

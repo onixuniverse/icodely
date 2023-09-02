@@ -13,6 +13,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["icodely.ru", "localhost"]
 
 INSTALLED_APPS = [
+    "usermanager",
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -68,6 +69,8 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'usermanager.CustomUser'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -96,6 +99,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = []
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media/uploads'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

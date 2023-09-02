@@ -1,13 +1,12 @@
-from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
-from courses.models import Lesson
+from courses.models import Lesson, CustomUser
 
 
 class Examination(models.Model):
     title = models.CharField(max_length=63, verbose_name="Название теста")
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор")
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="Урок")
 
     class Meta:
@@ -42,7 +41,7 @@ class ExaminationQuestion(models.Model):
 class ExaminationAnswer(models.Model):
     question = models.ForeignKey(ExaminationQuestion, on_delete=models.CASCADE, verbose_name="Вопрос")
     answer = models.CharField(max_length=63, verbose_name="Ответ")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь")
 
     def get_absolute_url(self):
         return reverse("exam_answer", kwargs={'exam_answer_id': self.pk})

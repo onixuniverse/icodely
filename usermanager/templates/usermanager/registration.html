@@ -1,5 +1,4 @@
-{% extends 'courses/login_base.html' %}
-{% load static %}
+{% extends 'usermanager/login_base.html' %}
 
 {% block login_form %}
     <div class="wrapper_reg">
@@ -37,7 +36,7 @@
             {% endfor %}
             <button type="submit">Подтвердить</button>
             <div class="register">
-                <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+                <p>Уже есть аккаунт? <a href="{% url 'usermanager:login' %}">Войти</a></p>
             </div>
         </form>
     </div>

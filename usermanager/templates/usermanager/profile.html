@@ -1,0 +1,53 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+
+{% block links %}
+    <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock links %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block content %}
+    <div class="content">
+        <section class="wrapper_form" id="personal_data">
+            <a href="{% url 'usermanager:logout' %}"><button class="exit">Выйти</button></a>
+            <form action="{% url 'usermanager:profile' %}" method="POST" class="user_data">
+                {% csrf_token %}
+                <div class="ava_container">
+                    <div class="user_avatar">
+                        <img src="{{ user.avatar.url }}" alt="{{ user.avatar }}" class="avatar">
+                    </div>
+                    <div class="name_id_container">
+                        <div class="user_name">
+                            {% if user.first_name or user.last_name %}
+                                {{ user.first_name }} {{ user.last_name }}
+                            {% elif user.email %}
+                                {{ user.email }}
+                            {% endif %}
+                        </div>
+                        <div class="user_id">ID: {{ user.id }}</div>
+                    </div>
+                </div>
+                <div class="input_group_container">
+                    <div class="input-group">
+                        <label>Имя</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="input-group">
+                        <label>Фамилия</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="button_container">
+                    <button type="submit" value="Update" class="user_data_btn">Сохранить</button>
+                </div>
+            </form>
+        </section>
+    </div>
+{% endblock content %}

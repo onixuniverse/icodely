@@ -1,5 +1,8 @@
-{% extends 'courses/login_base.html' %}
-{% load static %}
+{% extends 'usermanager/login_base.html' %}
+
+{% block title %}
+    {{ title }}
+{% endblock title %}
 
 {% block login_form %}
 
@@ -35,7 +38,7 @@
             </div>
             <button type="submit">Войти</button>
             <div class="register">
-                <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+                <p>Нет аккаунта? <a href="{% url 'usermanager:signup' %}">Зарегистрироваться</a></p>
             </div>
         </form>
     </div>

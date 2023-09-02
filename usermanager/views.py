@@ -99,12 +99,6 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return CustomUser.objects.get(pk=self.request.user.id)
 
-    def get_user_context(self, object_list=None, **kwargs):
-        context = super().get_user_context(**kwargs)
-        c_def = self.get_user_context(title="Профиль" + TITLE_WITH_DOT)
-
-        return dict(list(context.items()) + list(c_def.items()))
-
 
 class ChangeUserPassword(LoginRequiredMixin, UpdateView):
     ...

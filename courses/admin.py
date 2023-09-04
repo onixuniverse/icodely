@@ -12,7 +12,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ("title", "course", "content")
+    list_display = ("title", "course", "short_description")
     list_display_links = ("title", "course")
     search_fields = ("title",)
 

@@ -131,7 +131,6 @@ class ShowLesson(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailV
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_object(self, query_set=None):
-        print(self.kwargs)
         return Lesson.objects.get(id=self.kwargs['lesson_id'])
 
 
@@ -189,7 +188,6 @@ class InviteView(LoginRequiredMixin, View):
     def get_success_url(self):
         to = "/"
 
-        print(self.request.GET)
         if self.request.GET:
             to = self.request.GET["url"]
 

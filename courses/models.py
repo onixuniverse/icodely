@@ -47,12 +47,12 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.PROTECT, verbose_name="Курс")
-    # short_description
-    description = models.TextField(max_length=1023, verbose_name="Описание шага урока")
-    title = models.CharField(max_length=63, verbose_name="Название шага урока")
+    title = models.CharField(max_length=57, verbose_name="Название шага урока")
+    short_description = models.TextField(max_length=63, verbose_name="Краткое описание шага урока")
     content = models.TextField(max_length=4095, verbose_name="Контент шага урока")
+    homework_url = models.CharField(max_length=127, verbose_name="Ссылка на Д/З", null=True, blank=True)
     video_youtube = models.CharField(max_length=127, default=None, blank=True, null=True,
-                                     verbose_name="Ссылка на видео с Youtube")
+                                     verbose_name="EMBED-ссылка на видео с Youtube")
     pdf_file = models.FileField(upload_to="uploads/lessons/pdf/", default=None, null=True, blank=True,
                                 verbose_name="PDF-файл")
 

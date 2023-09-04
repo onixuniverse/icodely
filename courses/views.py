@@ -201,7 +201,7 @@ def invite_redirect(request):
 
     if invite:
         try:
-            exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk)
+            exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk, user=request.user)
         except:
             exist_access_to_course = None
 

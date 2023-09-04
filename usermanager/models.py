@@ -42,3 +42,6 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name if self.first_name and self.last_name else self.email

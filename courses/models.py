@@ -53,6 +53,8 @@ class Lesson(models.Model):
     content = models.TextField(max_length=4095, verbose_name="Контент шага урока")
     video_youtube = models.CharField(max_length=127, default=None, blank=True, null=True,
                                      verbose_name="Ссылка на видео с Youtube")
+    pdf_file = models.FileField(upload_to="uploads/lessons/pdf/", default=None, null=True, blank=True,
+                                verbose_name="PDF-файл")
 
     class Meta:
         verbose_name = "Урок"
@@ -88,6 +90,7 @@ class InviteUrl(models.Model):
 
 
 class UserToCourse(models.Model):
+    id = models.BigAutoField(primary_key=True)
     invite_uuid = models.ForeignKey(InviteUrl, on_delete=models.PROTECT, verbose_name="UUID приглашения(ссылки)")
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Студент")
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")

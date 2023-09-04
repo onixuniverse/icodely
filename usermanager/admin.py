@@ -5,4 +5,4 @@ from usermanager.models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ("email", "password")
+    list_display = ("email", "first_name", "last_name")

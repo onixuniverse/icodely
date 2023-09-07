@@ -5,8 +5,8 @@ from .models import *
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ("title", "description")
-    list_display_links = ("title",)
+    list_display = ("title", "description", "author")
+    list_display_links = ("title", "description")
     search_fields = ("title",)
 
 

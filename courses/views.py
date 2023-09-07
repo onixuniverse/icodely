@@ -182,41 +182,38 @@ class DeadlineView(View):
 
 
 # Invite links handlers
-class InviteView(LoginRequiredMixin, View):
-    model = InviteUrl
-
-    def get_success_url(self):
-        to = "/"
-
-        if self.request.GET:
-            to = self.request.GET["url"]
-
-        return to
-
-
 def invite_redirect(request):
-    invite = InviteUrl.objects.get(invite_uuid=request.GET["url"])
+    if request.user.is_authenticated:
+        invite = InviteUrl.objects.get(invite_uuid=request.GET["url"])
 
-    if invite:
-        try:
-            exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk, user=request.user)
-        except:
-            exist_access_to_course = None
+        if invite:
+            try:
+                exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk, user=request.user)
+            except:
+                exist_access_to_course = None
 
-        if not exist_access_to_course:
-            new_access_to_course = UserToCourse(invite_uuid=invite, user=request.user, course=invite.course)
-            new_access_to_course.save()
+            if not exist_access_to_course:
+                new_access_to_course = UserToCourse(invite_uuid=invite, user=request.user, course=invite.course)
+                new_access_to_course.save()
 
-            return HttpResponseRedirect(reverse("courses:course", args=[invite.course.id]))
+                return HttpResponseRedirect(reverse("courses:course", args=[invite.course.id]))
 
-    return HttpResponseRedirect(reverse("courses:index"))
+        return HttpResponseRedirect(reverse("courses:index"))
+    else:
+        return HttpResponseRedirect(reverse("usermanager:login"))
 
 
 # Errors handler
 def page_not_found_404(request, exception):
     context = {
-        "title": "Страница не найдена" + TITLE_WITH_DOT
+        "title": "404 - Страница не найдена" + TITLE_WITH_DOT
     }
     return render(request, "courses/404.html", context=context, status=404)
 
 
+def page_internal_error_500(request, exception):
+    context = {
+        "title": "500 - Ошибка сервера" + TITLE_WITH_DOT
+    }
+
+    return render(request, "courses/500.html", context=context, status=500)

@@ -23,7 +23,7 @@ class RegistrationUser(MenuMixin, CreateView):
 
     def get_user_context(self, object_list=None, **kwargs):
         context = super().get_user_context(**kwargs)
-        c_def = self.get_user_context(title="Регистрация")
+        c_def = self.get_user_context(title="Регистрация" + TITLE_WITH_DOT)
 
         return dict(list(context.items()) + list(c_def.items()))
 

@@ -5,6 +5,10 @@
     font-family: Montserrat;
 }
 
+.cookie_agreement {
+    box-sizing: initial;
+}
+
 .wrapper_form {
     margin: 60px 0px 40px;
     width: 800px;

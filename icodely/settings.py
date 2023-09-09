@@ -14,6 +14,7 @@ ALLOWED_HOSTS = ["icodely.ru", "localhost"]
 
 INSTALLED_APPS = [
     "usermanager",
+    "cookie_consent",
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,11 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "debug_toolbar",
     "courses",
     "examination",
     # "captcha",
-    "cookie_consent",
 ]
 
 MIDDLEWARE = [
@@ -36,7 +35,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'icodely.urls'

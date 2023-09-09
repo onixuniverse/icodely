@@ -3,88 +3,27 @@
 
 <html lang="ru">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T00PP3FYVR"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    {% include 'courses/analytics.html' %}
 
-      gtag('config', 'G-T00PP3FYVR');
-    </script>
-    <!-- Yandex.Metrika counter --> <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date(); for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }} k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(94762547, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/94762547" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     <link href="{% static 'css/store.css' %}" rel="stylesheet">
     <link href="{% static 'css/transform.css' %}" rel="stylesheet">
     {% block links %}{% endblock links %}
 
-    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block page_name %}{{ title }}{% endblock page_name %}</title>
 </head>
 <body>
-
-    <header class="common_header">
-        <a href="{% url 'courses:index' %}" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
-
-        <nav class="nav-links">
-            <a href="{% url 'courses:index' %}" class="nav_btn_header">Главная<div class="line"></div></a>
-            <a href="{% url 'courses:all_courses' %}" class="nav_btn_header">Все курсы<div class="line"></div></a>
-            <a href="{% url 'courses:my_courses' %}" class="nav_btn_header">Мои курсы<div class="line"></div></a>
-            <a href="{% url 'courses:deadline' %}" class="nav_btn_header">Дедлайны<div class="line"></div></a>
-        </nav>
-
-        <div class="account">
-            <a href="{% url 'usermanager:profile' %}" class="to_acc">
-                <div class="header_avatar">
-                    <img src="{{ user.avatar.url }}" alt="{{ user.avatar }}" class="avatar">
-                </div>
-                {% if user.is_authenticated %}
-                    {% if user.first_name or user.last_name %}
-                        {{ user.first_name }} {{ user.last_name }}
-                    {% else  %}
-                        {{ user.email }}
-                    {% endif %}
-                {% else %}
-                    <a href="{% url 'usermanager:login' %}">Войти</a>
-                {% endif %}
-            </a>
-        </div>
-
-        <div class="menu-hamburger">
-            <span class="hamburger"></span>
-            <span class="hamburger"></span>
-            <span class="hamburger"></span>
-        </div>
-    </header>
-
+    {% include 'courses/header_base.html' %}
     <div class="page">
-        {% block content %}
-
-        {% endblock content %}
+        {% block content %}{% endblock content %}
     </div>
-
-    <footer>
-        <div class="footer_nav">
-            <a href="#" class="hyperlink">
-                <p>Политика конфиденциальности</p>
-            </a>
-            <a href="#" class="hyperlink">
-                <p>Часто задаваемые вопросы</p>
-            </a>
-            <a href="#" class="hyperlink">
-                <img class="network_logo" src="instagram.png">
-                <p>/SCHOOL_ITEACHER_INST</p>
-            </a>
-            <a href="#" class="hyperlink">
-                <img class="network_logo" src="vk.png">
-                <p>/SCHOOL_ITEACHER_VK</p>
-            </a>
-        </div>
-    </footer>
-
-<script src="{% static 'js/responsive.js' %}"></script>
-
+    {% include 'courses/footer_base.html' %}
+    <script src="{% static 'js/responsive.js' %}"></script>
 </body>
 </html>

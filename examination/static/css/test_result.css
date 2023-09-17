@@ -1,0 +1,25 @@
+/*результат теста*/
+.special_picture{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.res_img{
+    max-width: 250px;
+}
+/*результат теста*/
+
+
+@media (max-width: 600px) { 
+    .res_img{
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 340px) {
+    .res_img{
+        max-width: 180px;
+    }
+}

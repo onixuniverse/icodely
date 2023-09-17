@@ -12,7 +12,7 @@
 
         <div class="account">
             <a href="{% url 'usermanager:profile' %}" class="to_acc">
-                <div class="header_avatar">
+                <div class="acc_background">
                     <img src="{{ user.avatar.url }}" alt="{{ user.avatar }}" class="avatar">
                 </div>
                 {% if user.is_authenticated %}
@@ -32,4 +32,4 @@
             <span class="hamburger"></span>
             <span class="hamburger"></span>
         </div>
-    </header>
+</header>

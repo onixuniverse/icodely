@@ -13,23 +13,11 @@
     font-size: 15px;
 }
 
-.btn_start{
-    width: 227px;
-    height: 50px;
-    border-radius: 15px;
-    color: white;
-}
 
-
-@media (min-width: 370px) and (max-width: 539px) { 
+@media (min-width: 370px) and (max-width: 539px) {
     .progress{
         width: 286px;
         height: 25px;
         margin: 15px;
-    }
-
-    .btn_start{
-        width: 316px;
-        height: 58px;
     }
 }

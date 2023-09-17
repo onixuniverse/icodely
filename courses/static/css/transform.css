@@ -1,15 +1,24 @@
 button:hover{
-    transition: 0.3s ease-in-out;
-    background-color: hsl(0, 0%, 0%);
+    background: rgb(82, 82, 82);
 }
 
-.button_filters:hover{
-    transition: 0.3s ease-in-out;
-    background-color: rgb(151, 151, 151);
+.btn_details:hover{
+    color: white;
+    border: 1px solid #D9D9D9;
 }
 
 button:active{
     opacity: 0.6;
+    transition: 0.1s ease-in-out;
+}
+
+
+
+
+/*
+.btn_open_filters:hover{
+    transition: 0.3s ease-in-out;
+    background-color: rgb(151, 151, 151);
 }
 
 .rotated{
@@ -23,11 +32,20 @@ button:active{
 
 .button_reset_filters:hover{
     background-color: white;
-    transition: 0.3s ease-in-out;
+    transition: 0.5s all;
     color: hsl(0, 72%, 54%);
 }
 
 .button_reset_filters > .thematic_picture :hover{
     transition: 0.3s ease-in-out;
     color: hsl(0, 72%, 54%);
+}
+*/
+
+.backplate:hover{
+    background: rgb(82, 82, 82);
+}
+
+.backplate:active{
+    opacity: 0.6;
 }

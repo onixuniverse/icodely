@@ -1,0 +1,128 @@
+.wrapper_courses{
+    max-width: 800px;
+    display: inline-flex;
+    margin: 60px 0px;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.course{
+    width: 250px;
+    height: 300px;
+    border-radius: 15px;
+    background: #D9D9D9;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: relative;
+}
+
+.background_course{
+    width: 228px;
+    height: 210px;
+    border-radius: 10px;
+    background: #b7b8d1;
+    color:black;
+    position: relative;
+}
+
+.info_course{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 21px 16px;
+}
+
+.info_course .name{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.info_course .author{
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.btn_start{
+    width: 227px;
+    height: 50px;
+    border-radius: 15px;
+    color: white;
+}
+
+.yellow{
+    background: rgba(237, 212, 165, 1);
+}
+
+.blue{
+    background: rgba(178, 205, 211, 1);
+}
+
+.pink{
+    background: rgba(255, 184, 201, 1);
+}
+
+
+@media screen and (max-width: 1024px){
+    .wrapper_courses{
+        margin: 100px 0px 40px 0px;
+    }
+}
+
+@media (max-width: 820px) { 
+    .wrapper_courses{
+        gap: 15px;
+    }
+}
+
+@media (max-width: 800px) { 
+    .content{
+        max-width: 600px;
+    }
+    .wrapper_courses{
+        justify-content: center;
+    }
+}
+
+
+@media (max-width: 600px) { 
+    .content{
+        margin: 0px 10px auto;
+    }
+    .wrapper_courses{
+        gap: 15px;
+    }
+}
+
+@media (min-width: 370px) and (max-width: 539px) { 
+    .course{
+        width: 350px;
+        height: 400px;
+    }
+
+    .background_course{
+        width: 316px;
+        height: 293px;
+    }
+
+    .info_course{
+        padding: 25px 20px;
+        gap: 12px;
+    }
+
+    .info_course .name{
+        font-size: 25px;
+    }
+
+    .info_course .author{
+        font-size: 15px;
+    }
+
+    .btn_start{
+        width: 316px;
+        height: 58px;
+    }
+}

@@ -10,7 +10,7 @@
 
 .number_step{
     font-size: 15px;
-    background: black;
+    background: rgb(0,0,0);
     color: white;
     padding: 7px;
     border-radius: 10px 0px 10px 0px;
@@ -34,14 +34,12 @@
     overflow: hidden;
 }
 
-
 .wrapper_status{
     display: flex;
     align-items: center;
     justify-content: center;
 
 }
-
 
 .status{
     position: absolute;
@@ -56,15 +54,16 @@
     width: 140px;
     border-radius: 15px 15px 0px 0px;
     font-size: 13px;
+    letter-spacing: 0.5px;
 }
 
 .done{
-    background: rgb(105 157 95);
-    content: '';
+    background: rgb(101, 146, 12);
 }
 
 .in_progress{
-    background: rgb(216, 150, 29);
+    background: rgb(241, 192, 30);
+    color: black;
 }
 
 .unavailable{
@@ -72,7 +71,7 @@
 }
 
 
-@media (min-width: 370px) and (max-width: 539px) { 
+@media (min-width: 370px) and (max-width: 539px) {
     .name{
         font-size: 25px;
         margin: 50px 20px 10px;
@@ -87,5 +86,6 @@
     .number_step{
         padding: 12px;
         font-size: 17px;
+        width: 105px;
     }
 }

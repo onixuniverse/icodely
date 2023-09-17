@@ -1,14 +1,20 @@
+.content {
+    max-width: 1200px;
+    margin: auto;
+    position: relative;
+}
+
 .menu_header{
     height: 80px;
     background: #57518d;;
-    position: relative; 
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
 }
 
-nav{
+.navigation{
     max-width: 1200px;
     display: inline-flex;
     flex-direction: row;
@@ -64,17 +70,17 @@ nav{
 }
 
 .fan_picture{
-    width: 58%;  
+    width: 58%;
     display: flex;
     align-items: center;
     margin: 10px auto;
 }
 
 @media screen and (max-width: 1024px){
-    .content_mainpage{
+    .content{
         max-width: 750px;
     }
-    
+
     .logo{
         margin-left: 0%;
     }
@@ -85,33 +91,31 @@ nav{
     }
 }
 
-@media (max-width: 820px) { 
-    nav{
+@media (max-width: 820px) {
+    .navigation{
         gap: 15px;
     }
-    .content_mainpage{
+    .content{
         max-width: 600px;
     }
 }
 
-@media (max-width: 600px) { 
-    .nav{
+@media (max-width: 600px) {
+    .navigation{
         gap: 15px;
     }
 }
 
-@media (min-width: 370px) and (max-width: 539px) {    
+@media (min-width: 370px) and (max-width: 539px) {
     .wrapper{
         width: 350px;
         height: 420px;
     }
 
     .backplate{
-        width: 325px;
-        height: 395px;
-        border-radius: 25px;
+        width: 320px;
+        height: 390px;
         background: #DE3636;
-        border: 15px #DADADA solid;
         position: relative;
     }
 

@@ -33,7 +33,7 @@
     </div>
 
     <nav class="container_buttons">
-        <a href="#">
+        <a href="{% url 'courses:course' lesson.course.pk %}">
             <button>Назад</button>
         </a>
         {% if lesson.homework_url %}

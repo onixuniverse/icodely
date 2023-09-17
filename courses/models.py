@@ -4,6 +4,7 @@ from django.db import models
 
 from django.urls import reverse
 
+from examination.models import Examination
 from usermanager.models import CustomUser
 
 
@@ -47,9 +48,11 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.PROTECT, verbose_name="Курс")
-    title = models.CharField(max_length=57, verbose_name="Название шага урока")
-    short_description = models.TextField(max_length=63, verbose_name="Краткое описание шага урока")
-    content = models.TextField(max_length=4095, verbose_name="Контент шага урока")
+    title = models.CharField(max_length=57, verbose_name="Название урока")
+    short_description = models.TextField(max_length=63, verbose_name="Краткое описание урока")
+    content = models.TextField(max_length=4095, verbose_name="Содержание урока")
+    exam_homework = models.ForeignKey(Examination, on_delete=models.PROTECT, default=None, blank=True, null=True,
+                                      verbose_name="Тест")
     homework_url = models.CharField(max_length=127, verbose_name="Ссылка на Д/З", null=True, blank=True)
     video_youtube = models.CharField(max_length=127, default=None, blank=True, null=True,
                                      verbose_name="EMBED-ссылка на видео с Youtube")
@@ -98,3 +101,7 @@ class UserToCourse(models.Model):
     class Meta:
         verbose_name = "Доступ пользователя к курсу"
         verbose_name_plural = "Доступы пользователей к курсам"
+
+
+class Deadlines(models.Model):
+    pass

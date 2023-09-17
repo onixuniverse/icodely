@@ -6,7 +6,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 
 from .forms import AddCourseForm, AddLessonForm
-from .models import Course, Lesson, UserToCourse, InviteUrl
+from .models import Course, Lesson, UserToCourse, InviteUrl, Deadlines
 from .mixins import MenuMixin, GroupRequiredMixin, UserToCourseAccessMixin
 
 TITLE = "icodely"
@@ -177,8 +177,9 @@ class AddLesson(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
 
 
 # Deadlines
-class DeadlineView(View):
-    pass
+class DeadlineView(LoginRequiredMixin, MenuMixin, ListView):
+    model = Deadlines
+    template_name = "courses/deadlines.html"
 
 
 # Invite links handlers

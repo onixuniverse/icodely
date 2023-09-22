@@ -5,5 +5,5 @@ from examination import views
 app_name = "examination"
 
 urlpatterns = [
-    path("e", views.exam_view)
+    path("<int:exam_id>/", views.exam_view, name="exam")
 ]

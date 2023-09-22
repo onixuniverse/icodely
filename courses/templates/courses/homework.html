@@ -1,117 +1,72 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <link href="C:\Users\maks_\Desktop\для сайта itcher\css./app.css" rel="stylesheet">
-    <link href="C:\Users\maks_\Desktop\для сайта itcher\css./homework.css" rel="stylesheet">
-    <link href="C:\Users\maks_\Desktop\для сайта itcher\css./transform.css" rel="stylesheet">
-    <link href="C:\Users\maks_\Desktop\для сайта itcher\css./group-style-two.css" rel="stylesheet">
-    
-    <link rel="shortcut icon" href="logo.ico" type="image/x-icon">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITeacher</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="page">
-        <header class="common_header">
-            <a href="http://localhost:8000/" class="logo_link"><img class="logo" src="./localhost_files/logo.png"></a>
+{% extends 'courses/base.html' %}
+{% load static %}
 
-            <nav class="nav-links">
-                <a href="http://localhost:8000/" class="nav_btn_header">Главная<div class="line"></div></a>
-                <a href="http://localhost:8000/courses/" class="nav_btn_header">Все курсы<div class="line"></div></a>
-                <a href="http://localhost:8000/courses/my" class="nav_btn_header">Мои курсы<div class="line"></div></a>
-                <a href="http://localhost:8000/deadlines/" class="nav_btn_header">Дедлайны<div class="line"></div></a>
-            </nav>
+{% block links %}
+    <link href="{% static 'css/homework.css' %}" rel="stylesheet">
+{% endblock links %}
 
-            <div class="account">
-                <a href="http://localhost:8000/profile/" class="to_acc">
-                    <div class="acc_background"><img class="avatar" src="user_avatar.png"></div>      
-                            admin@admin.ru
-                </a>
-            </div>
+{% block content %}
+<div class="content">
 
-            <div class="menu-hamburger">
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-            </div>
-        </header>
-
-        <form autocomplete="off">
-            <div class="content">
-
-                <div class="title">
-                    <h2>Шаг 1. Домашнее задание</h2>
-                    В этом тесте ты проверишь свои знания, полученные из прохождения первого шага моего прекрасного курса.
-                </div>
-
-                <div class="info">
-                    <h4>Информация</h4>
-                    <ul>
-                        <div class="comment"><li>Дедлайн:</li>15 часов</div><br>
-                        <div class="comment"><li>Количество баллов:</li>15</div><br>
-                    </ul>
-                </div>
-
-                <div class="loads_btn">
-                    <h4>Файлы к работе</h4>
-                    <div class="warning">Внимание! При скачивании задания, вы начанаете его выполнение.</div>
-                    <div class="loads_btn_container">
-
-                        <a href="#">
-                            <div class="load__file-button">
-                                <span class="file_ico"><img class="picto" src="C:\Users\maks_\Desktop\для сайта itcher\images\скачать1.png"></span>
-                                Скачать задание
-                            </div>
-                        </a>
-
-                        <input type="file" name="file" id="download__file-2" class="download download__file" multiple>
-                        <label class="download__file-wrapper" for="download__file-2">          
-                            <div class="load__file-button">
-                                <span class="file_ico"><img class="picto" src="C:\Users\maks_\Desktop\для сайта itcher\images\загрузить1.png"></span>
-                                Загрузить файл
-                            </div>
-                            <div class="download__file-list"></div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="info">
-                    <h4>Результат</h4>
-                    <ul>
-                        <div class="comment"><li>Баллы:</li>12/15</div><br>
-                        <div class="comment"><li>Статус работы:</li>Зачтено</div><br>
-                        <div class="comment"><li>Комментарий:</li>Ошибки в заданиях 12, 10, 1</div><br>
-                    </ul>
-                </div>
-            </div>
-
-            <nav class="container_buttons">
-                <a href="#"><button>Назад</button></a>
-                <button type="submit">Сдать работу</button>
-            </nav>
-        </form>   
-
-        <footer>
-            <div class="footer_nav">
-                <a href="#" class="hyperlink">
-                    <p>Политика конфиденциальности</p>
-                </a>
-                <a href="#" class="hyperlink">
-                    <p>Часто задаваемые вопросы</p>
-                </a>
-                <a href="#" class="hyperlink">
-                    <img class="network_logo" src="C:\Users\maks_\Desktop\для сайта itcher\images\tg.png">
-                    <p>/SCHOOL_ITEACHER_TG</p>
-                </a>
-                <a href="#" class="hyperlink">
-                    <img class="network_logo" src="C:\Users\maks_\Desktop\для сайта itcher\images\vk.png">
-                    <p>/SCHOOL_ITEACHER_VK</p>
-                </a>     
-            </div>
-        </footer>
+    <div class="title">
+        <h2>{{ homework.title }}</h2>
+        {{ homework.description }}
     </div>
-    <script src="C:\Users\maks_\Desktop\для сайта itcher\тесты\uploadfiles.js"></script>
-</body>
-</html>
+
+    <div class="info">
+        <h4>Информация</h4>
+        <ul>
+            <div class="comment"><li>Дедлайн:</li>N/A</div><br>
+            <div class="comment"><li>Количество баллов:</li>N/A</div><br>
+        </ul>
+    </div>
+
+    {% if homework.homework_file %}
+        <form method="POST" autocomplete="off" enctype="multipart/form-data">
+            <div class="loads_btn">
+                <h4>Файлы к работе</h4>
+                <div class="warning">Внимание! При скачивании задания, вы начинаете его выполнение.</div>
+                <div class="loads_btn_container">
+
+                    <a href="{{ homework.homework_file.url }}">
+                        <div class="load__file-button">
+                            <span class="file_ico"><img class="picto" src="{% static 'images/download.png' %}"></span>
+                            Скачать задание
+                        </div>
+                    </a>
+
+                    <input type="file" name="file" id="download__file-2" class="download download__file" multiple>
+                    <label class="download__file-wrapper" for="download__file-2">
+                        <div class="load__file-button">
+                            <span class="file_ico"><img class="picto" src="{% static 'images/upload.png' %}"></span>
+                            Загрузить файл
+                        </div>
+                        <div class="download__file-list"></div>
+                    </label>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+
+<div class="loads_btn">
+    <h4>Тестовое задание</h4>
+    <div class="warning">Тестовое задание входит в состав домашнего задания!</div>
+    <button type="submit"><a href="{% url 'examination:exam' homework.exam.id %}">Решить тест</a></button>
+</div>
+
+<div class="info">
+    <h4>Результат</h4>
+    <ul>
+        <div class="comment"><li>Баллы:</li>N/A</div><br>
+        <div class="comment"><li>Статус работы:</li>N/A</div><br>
+        <div class="comment"><li>Комментарий:</li>N/A</div><br>
+    </ul>
+</div>
+</div>
+
+<nav class="container_buttons">
+<a href="#"><button>Назад</button></a>
+<button type="submit">Сдать работу</button>
+</nav>
+{% endblock content %}
+<script src="{% static 'js/upload_files.js' %}"></script>

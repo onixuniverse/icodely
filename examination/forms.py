@@ -3,7 +3,9 @@ from django import forms
 from .models import *
 
 
-class AddExaminationAnswerForm(forms.ModelForm):
+class ExamAnswerForm(forms.ModelForm):
+    answer = forms.CharField()
+
     class Meta:
         model = ExaminationAnswer
-        fields = ["question", "answer"]
+        fields = ["answer"]

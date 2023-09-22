@@ -12,6 +12,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["icodely.ru", "localhost"]
 
+INTERNAL_IPS = [
+    # ...
+    "localhost:8000",
+    "127.0.0.1"
+    # ...
+]
+
 INSTALLED_APPS = [
     "usermanager",
     "cookie_consent",
@@ -24,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "courses",
     "examination",
+    "debug_toolbar",
     # "captcha",
 ]
 
@@ -35,6 +43,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'icodely.urls'
@@ -91,6 +100,8 @@ TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 
 USE_TZ = True
+
+LOGIN_URL = "usermanager:login"
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")

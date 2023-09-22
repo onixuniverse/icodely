@@ -2,11 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 
+from examination.models import ExaminationAnswer, ExaminationQuestion
 from .forms import AddCourseForm, AddLessonForm
-from .models import Course, Lesson, UserToCourse, InviteUrl, Deadlines
+from .models import Course, Lesson, UserToCourse, InviteUrl, Deadlines, Homework
 from .mixins import MenuMixin, GroupRequiredMixin, UserToCourseAccessMixin
 
 TITLE = "icodely"
@@ -176,6 +176,21 @@ class AddLesson(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
         return kwargs
 
 
+# Homework
+class HomeworkView(LoginRequiredMixin, MenuMixin, DetailView):
+    model = Homework
+    template_name = "courses/homework.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=str(kwargs['object']) + TITLE_WITH_DOT)
+
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_object(self, queryset=None):
+        return Lesson.objects.get(id=self.kwargs["lesson_id"]).homework
+
+
 # Deadlines
 class DeadlineView(LoginRequiredMixin, MenuMixin, ListView):
     model = Deadlines
@@ -190,7 +205,7 @@ def invite_redirect(request):
         if invite:
             try:
                 exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk, user=request.user)
-            except:
+            except UserToCourse.DoesNotExist:
                 exist_access_to_course = None
 
             if not exist_access_to_course:

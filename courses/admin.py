@@ -26,3 +26,9 @@ class InviteUrlAdmin(admin.ModelAdmin):
 @admin.register(UserToCourse)
 class UserToCourseAdmin(admin.ModelAdmin):
     list_display = ("invite_uuid", "user", "course")
+
+
+@admin.register(Homework)
+class HomeworkAdmin(admin.ModelAdmin):
+    list_display = ("title", "description")
+    list_display_links = ("title",)

@@ -20,7 +20,7 @@
         {% if lesson.video_youtube %}
             <div class="videos">
                 <h4>Видео материалы</h4>
-                <iframe  class="video" src="https://www.youtube.com/embed/IvFaMp2-NOs?si=uk9j2XaQCsumN5KL"></iframe>
+                <iframe  class="video" src="{{ lesson.video_youtube }}"></iframe>
             </div>
         {% endif %}
 
@@ -36,9 +36,9 @@
         <a href="{% url 'courses:course' lesson.course.pk %}">
             <button>Назад</button>
         </a>
-        {% if lesson.homework_url %}
-            <a href="{{ lesson.homework_url }}" target="_blank">
-                <button>ДЗ</button>
+        {% if lesson.homework %}
+            <a href="{% url 'courses:homework' lesson.course.id lesson.id lesson.homework.id %}">
+                <button>Домашняя работа</button>
             </a>
         {% endif %}
     </nav>

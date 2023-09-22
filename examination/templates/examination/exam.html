@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% load static %}
+<html lang="ru">
 <body>
 
+<form action="{% url 'examination:exam' exam_id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for answer_entry, question in ans_quest_array %}
+        {{ forloop.counter }}) {{ question }} <br> {{ answer_entry.answer }}
+        <br>
+        <br>
+    {% endfor %}
+    <button type="submit" class="btn btn-block">Submit</button>
+</form>
+{% if formset_errors %}
+    {{ formset_errors }}
+{% endif %}
 </body>
 </html>

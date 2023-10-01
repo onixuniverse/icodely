@@ -1,18 +1,117 @@
+{% extends 'courses/base.html' %}
 {% load static %}
-<html lang="ru">
-<body>
 
-<form action="{% url 'examination:exam' exam_id %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for answer_entry, question in ans_quest_array %}
-        {{ forloop.counter }}) {{ question }} <br> {{ answer_entry.answer }}
-        <br>
-        <br>
-    {% endfor %}
-    <button type="submit" class="btn btn-block">Submit</button>
-</form>
-{% if formset_errors %}
-    {{ formset_errors }}
-{% endif %}
-</body>
-</html>
+{% block links %}
+    <link href="{% static 'css/examination.css' %}" rel="stylesheet">
+{% endblock links %}
+
+{% block content %}
+<div class="content">
+        <div class="wrapper_question">
+            <form action="{% url 'examination:exam' exam_id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for answer_entry, question in ans_quest_array %}
+                    <section class="body_question {% if forloop.counter == 1 %}active{% endif %}" id="id_form-{{ forloop.counter }}-answer">
+                        <h4>Задание {{ forloop.counter }}</h4>
+                        <div class="text_question">{{ question }}</div>
+                        {% if question.question_image %}
+                            <img class="img_question" src="{{ question.question_image.url }}">
+                        {% endif %}
+                        <div class="group_answer_question">
+                            {{ answer_entry.answer }}
+                            <div class="btn_save_answer">Сохранить ответ</div>
+                        </div>
+                    </section>
+                {% endfor %}
+
+                <section class="body_question" id="send_test">
+                    <h4>{{ exam_title }}</h4>
+                    <div class="text_question">Это был последний вопрос, ты можешь завершить тест или еще раз подумать над ответами</div>
+                    <img class="send_test_img" src="{% static 'images/exam_end.png' %}">
+                    <div class="group_answer_question">
+                        <button type="submit" class="btn_save_answer">Завершить тест</button>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+
+    <nav class="btns_pre_next">
+        <div class="btn_question  previous"><img src="{% static 'images/arrow_red.png' %}"></div>
+        <div class="btn_question  next"><img src="{% static 'images/arrow_red.png' %}"></div>
+    </nav>
+
+<script type="text/javascript">
+    const toggle_next = document.querySelector('.next');
+    const toggle_previous = document.querySelector('.previous');
+    const body_question = document.querySelectorAll('.body_question');
+    const save_answer = document.querySelectorAll('.btn_save_answer');
+    const send_test = document.getElementById('send_test');
+    const first_page = document.getElementById('id_form-1-answer');
+
+    if (first_page.classList.contains('active')){
+        toggle_previous.style.visibility = 'hidden';
+    }
+
+    toggle_next.addEventListener('click' ,()=> {
+        for (let i = 0; i < body_question.length - 1; i++){
+            if (body_question[i].classList.contains("active")){
+                body_question[i].classList.remove('active');
+                body_question[i].classList.add('location_left');
+                body_question[i + 1].classList.add('active');
+                break;
+            }
+        }
+
+        if (send_test.classList.contains('active')){
+            toggle_next.style.visibility = 'hidden';
+        }
+
+        if (!first_page.classList.contains('active')){
+            toggle_previous.style.visibility = 'visible';
+        }
+    });
+
+    toggle_previous.addEventListener('click' ,()=> {
+        for (let i = 0; i <= body_question.length - 1; i++){
+            console.log(body_question[i], i, body_question.length)
+            if (body_question[i].classList.contains("active") && !(body_question[0].classList.contains("active"))){
+                body_question[i].classList.remove('active');
+                body_question[i - 1].classList.remove('location_left');
+                body_question[i - 1].classList.add('active');
+                break;
+            }
+        }
+
+        if (!send_test.classList.contains('active')){
+            toggle_next.style.visibility = 'visible';
+        }
+
+        if (first_page.classList.contains('active')){
+            toggle_previous.style.visibility = 'hidden';
+        }
+    });
+
+    save_answer.forEach(button => {
+        button.addEventListener('click', ()=> {
+            for (let i = 0; i < body_question.length - 1; i++){
+                if (body_question[i].classList.contains("active")){
+                    body_question[i].classList.remove('active');
+                    body_question[i].classList.add('location_left');
+                    body_question[i + 1].classList.add('active');
+                    break;
+                }
+            }
+
+            if (send_test.classList.contains('active')){
+                toggle_next.style.visibility = 'hidden';
+            }
+
+            if (!first_page.classList.contains('active')){
+                toggle_previous.style.visibility = 'visible';
+            }
+        });
+    });
+</script>
+{% endblock content %}

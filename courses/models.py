@@ -52,6 +52,7 @@ class Homework(models.Model):
     description = models.TextField(max_length=255, verbose_name="Описание")
     homework_file = models.FileField(upload_to="uploads/homework/files/", default=None, null=True, blank=True,
                                      verbose_name="Файл с Д/З")
+    homework_max_result = models.IntegerField(default=10, verbose_name="Максимальный балл за файл с Д/З")
     homework_url = models.CharField(max_length=127, null=True, blank=True, verbose_name="Ссылка на Д/З")
     exam = models.ForeignKey(Examination, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Тестирование")
 

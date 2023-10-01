@@ -18,55 +18,73 @@
         <ul>
             <div class="comment"><li>Дедлайн:</li>N/A</div><br>
             <div class="comment"><li>Количество баллов:</li>N/A</div><br>
+
         </ul>
     </div>
 
     {% if homework.homework_file %}
-        <form method="POST" autocomplete="off" enctype="multipart/form-data">
+        <form action="{% url 'courses:homework' statistics.lesson.course.id statistics.lesson.id statistics.lesson.homework.id %}" method="POST" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="loads_btn">
                 <h4>Файлы к работе</h4>
                 <div class="warning">Внимание! При скачивании задания, вы начинаете его выполнение.</div>
                 <div class="loads_btn_container">
 
-                    <a href="{{ homework.homework_file.url }}">
+                    <a href="{{ homework.homework_file.url }}" target="_blank">
                         <div class="load__file-button">
                             <span class="file_ico"><img class="picto" src="{% static 'images/download.png' %}"></span>
                             Скачать задание
                         </div>
                     </a>
 
-                    <input type="file" name="file" id="download__file-2" class="download download__file" multiple>
-                    <label class="download__file-wrapper" for="download__file-2">
-                        <div class="load__file-button">
-                            <span class="file_ico"><img class="picto" src="{% static 'images/upload.png' %}"></span>
-                            Загрузить файл
-                        </div>
-                        <div class="download__file-list"></div>
-                    </label>
+<!--                    <input type="file" name="homework_upload_file" id="id_homework_upload_file" class="download download__file">-->
+<!--                    <label class="download__file-wrapper" for="id_homework_upload_file">-->
+<!--                        <div class="load__file-button">-->
+<!--                            <span class="file_ico"><img class="picto" src="{% static 'images/upload.png' %}"></span>-->
+<!--                            Загрузить файл-->
+<!--                        </div>-->
+<!--                        <div class="download__file-list"></div>-->
+<!--                    </label>-->
                 </div>
             </div>
         </form>
     {% endif %}
 
-<div class="loads_btn">
-    <h4>Тестовое задание</h4>
-    <div class="warning">Тестовое задание входит в состав домашнего задания!</div>
-    <button type="submit"><a href="{% url 'examination:exam' homework.exam.id %}">Решить тест</a></button>
-</div>
+    {% if homework.exam %}
+        <div class="loads_btn">
+            <h4>Тестовое задание</h4>
+            <div class="warning">Тестовое задание входит в состав домашнего задания!</div>
+            {% if statistics.exam_attempts < exam_max_attempts %}
+                <button type="submit"><a href="{% url 'examination:exam' homework.exam.id %}">Решить тест</a></button>
+            {% else %}
+                <button type="submit"><a href="{% url 'examination:exam_result' homework.exam.id %}">Результаты теста</a></button>
+            {% endif %}
+        </div>
+    {% endif %}
 
-<div class="info">
-    <h4>Результат</h4>
-    <ul>
-        <div class="comment"><li>Баллы:</li>N/A</div><br>
-        <div class="comment"><li>Статус работы:</li>N/A</div><br>
-        <div class="comment"><li>Комментарий:</li>N/A</div><br>
-    </ul>
-</div>
-</div>
+    <div class="info">
+        <h4>Результат</h4>
+        <ul>
+            <div class="comment"><li>Баллы домашней работы:</li>{{ statistics.homework_result }}/{{ statistics.lesson.homework.homework_max_result }}</div><br>
+            <div class="comment"><li>Статус работы:</li>
+                {% if not statistics.is_homework_complete %}
+                    Доступно для выполнения
+                {% elif statistics.is_exam_complete and  statistics.is_homework_complete %}
+                    Всё задание выполнено!
+                {% elif statistics.is_homework_checked %}
+                    Задание проверено
+                {% elif statistics.is_homework_complete %}
+                    Задание отправлено
+                {% endif %}
+            </div><br>
+            {% if statistics.homework_comment %}<div class="comment"><li>Комментарий:</li>{{ statistics.homework_comment }}</div><br>{% endif %}
+        </ul>
+    </div>
+    </div>
 
-<nav class="container_buttons">
-<a href="#"><button>Назад</button></a>
-<button type="submit">Сдать работу</button>
-</nav>
+    <nav class="container_buttons">
+        <a href="#"><button>Назад</button></a>
+<!--        <button type="submit">Сдать работу</button>-->
+    </nav>
 {% endblock content %}
 <script src="{% static 'js/upload_files.js' %}"></script>

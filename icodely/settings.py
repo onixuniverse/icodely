@@ -31,7 +31,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "courses",
     "examination",
+    "courses_statistics",
     "debug_toolbar",
+    "mathfilters",
     # "captcha",
 ]
 
@@ -43,6 +45,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 

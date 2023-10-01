@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.urls import reverse
 
@@ -6,6 +7,12 @@ from usermanager.models import CustomUser
 
 class Examination(models.Model):
     title = models.CharField(max_length=63, verbose_name="Название теста")
+    max_attempts = models.PositiveSmallIntegerField(default=1, verbose_name="Количество попыток",
+                                                    validators=[
+                                                        MaxValueValidator(limit_value=10,
+                                                                          message="Максимальное количество попыток: 10")
+                                                    ])
+
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")
 
     class Meta:
@@ -40,6 +47,7 @@ class ExaminationQuestion(models.Model):
 class ExaminationAnswer(models.Model):
     question = models.ForeignKey(ExaminationQuestion, on_delete=models.CASCADE, verbose_name="Вопрос")
     answer = models.CharField(max_length=63, blank=True, null=True, verbose_name="Ответ")
+    is_answer_right = models.BooleanField(default=False, verbose_name="Правильный ответ?")
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Пользователь")
 
     def get_absolute_url(self):

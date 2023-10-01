@@ -1,9 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView
 
+from courses_statistics.forms import UploadHomeworkFile
+from courses_statistics.models import UserStatistics
 from examination.models import ExaminationAnswer, ExaminationQuestion
 from .forms import AddCourseForm, AddLessonForm
 from .models import Course, Lesson, UserToCourse, InviteUrl, Deadlines, Homework
@@ -124,6 +126,15 @@ class ShowLesson(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailV
     context_object_name = "lesson"
     login_url = reverse_lazy("usermanager:login")
 
+    def setup(self, request, *args, **kwargs):
+        try:
+            UserStatistics.objects.get(user=request.user, lesson=Lesson.objects.get(id=kwargs["lesson_id"]))
+        except UserStatistics.DoesNotExist:
+            new_user_statistics = UserStatistics(user=request.user, lesson=Lesson.objects.get(id=kwargs["lesson_id"]))
+            new_user_statistics.save()
+
+        return super().setup(request, *args, **kwargs)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT)
@@ -182,10 +193,26 @@ class HomeworkView(LoginRequiredMixin, MenuMixin, DetailView):
     template_name = "courses/homework.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=str(kwargs['object']) + TITLE_WITH_DOT)
+        lesson = Lesson.objects.get(id=self.kwargs["lesson_id"])
+        try:
+            user_statistics = UserStatistics.objects.get(user=self.request.user,
+                                                         lesson=lesson)
+        except UserStatistics.DoesNotExist:
+            user_statistics = UserStatistics(user=self.request.user,
+                                             lesson=lesson)
+            user_statistics.save()
 
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=str(kwargs['object']) + TITLE_WITH_DOT,
+                                      statistics=user_statistics,
+                                      exam_max_attempts=kwargs["object"].exam.max_attempts,
+                                      form=UploadHomeworkFile(self.request.POST, self.request.FILES))
         return dict(list(context.items()) + list(c_def.items()))
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+
+        return redirect("courses:homework", kwargs['course_id'], kwargs["lesson_id"], kwargs["homework_id"])
 
     def get_object(self, queryset=None):
         return Lesson.objects.get(id=self.kwargs["lesson_id"]).homework

@@ -1,6 +1,7 @@
 media/uploads/
 venv/
 templates/courses/old/
+migrations/
 
 
 # Byte-compiled / optimized / DLL files

@@ -92,11 +92,10 @@ class CourseLessonsDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuM
     login_url = reverse_lazy("usermanager:login")
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT,
-                                      lessons=Lesson.objects.filter(course_id=self.kwargs['course_id']),
-                                      lesson_status="N/A")
+                                      lessons=Lesson.objects.filter(course_id=self.kwargs['course_id']))
 
+        context = super().get_context_data(**kwargs)
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_object(self, query_set=None):
@@ -126,18 +125,21 @@ class ShowLesson(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailV
     context_object_name = "lesson"
     login_url = reverse_lazy("usermanager:login")
 
-    def setup(self, request, *args, **kwargs):
-        try:
-            UserStatistics.objects.get(user=request.user, lesson=Lesson.objects.get(id=kwargs["lesson_id"]))
-        except UserStatistics.DoesNotExist:
-            new_user_statistics = UserStatistics(user=request.user, lesson=Lesson.objects.get(id=kwargs["lesson_id"]))
-            new_user_statistics.save()
-
-        return super().setup(request, *args, **kwargs)
-
     def get_context_data(self, *, object_list=None, **kwargs):
+        try:
+            user_statistics = UserStatistics.objects.get(user=self.request.user,
+                                                         lesson=self.object)
+
+        except UserStatistics.DoesNotExist:
+            user_statistics = UserStatistics(user=self.request.user, lesson=self.object)
+            user_statistics.save()
+
+        if not user_statistics.is_lesson_opened:
+            user_statistics.is_lesson_opened = 1
+            user_statistics.save()
+
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT)
+        c_def = self.get_user_context(title=self.object.title + TITLE_WITH_DOT)
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -191,6 +193,7 @@ class AddLesson(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
 class HomeworkView(LoginRequiredMixin, MenuMixin, DetailView):
     model = Homework
     template_name = "courses/homework.html"
+    context_object_name = "homework"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         lesson = Lesson.objects.get(id=self.kwargs["lesson_id"])
@@ -206,6 +209,8 @@ class HomeworkView(LoginRequiredMixin, MenuMixin, DetailView):
         c_def = self.get_user_context(title=str(kwargs['object']) + TITLE_WITH_DOT,
                                       statistics=user_statistics,
                                       exam_max_attempts=kwargs["object"].exam.max_attempts,
+                                      course_id=lesson.course.id,
+                                      lesson=lesson,
                                       form=UploadHomeworkFile(self.request.POST, self.request.FILES))
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -215,7 +220,7 @@ class HomeworkView(LoginRequiredMixin, MenuMixin, DetailView):
         return redirect("courses:homework", kwargs['course_id'], kwargs["lesson_id"], kwargs["homework_id"])
 
     def get_object(self, queryset=None):
-        return Lesson.objects.get(id=self.kwargs["lesson_id"]).homework
+        return Homework.objects.get(id=self.kwargs["homework_id"])
 
 
 # Deadlines

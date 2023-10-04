@@ -28,7 +28,7 @@ class Examination(models.Model):
 
 class ExaminationQuestion(models.Model):
     exam = models.ForeignKey(Examination, on_delete=models.CASCADE, verbose_name="Тестирование")
-    question = models.TextField(max_length=255, verbose_name="Вопрос")
+    question = models.TextField(max_length=1023, verbose_name="Вопрос")
     question_image = models.ImageField(upload_to="lessons/exams/images", default=None, blank=True, null=True,
                                        verbose_name="Изображение (необязательно)")
     right_answer = models.CharField(max_length=63, verbose_name="Правильный ответ")

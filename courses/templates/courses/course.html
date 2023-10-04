@@ -17,9 +17,11 @@
                     <div class="background_course">
                         <div class="name">{{ lesson.title }}</div>
                         <div class="about_step">{{ lesson.short_description }}</div>
-                        <div class="wrapper_status">
-                            <div class="status done">{{ lesson_status }}</div>
-                        </div>
+<!--                        <div class="wrapper_status">-->
+<!--                            <div class="status done">-->
+<!--                                {{ lesson_statuses }}-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                     <a href="{% url 'courses:lesson' course.pk lesson.pk %}">
                         <button class="btn_start">Выполнить</button>

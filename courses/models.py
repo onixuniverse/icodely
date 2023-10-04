@@ -20,8 +20,12 @@ class Course(models.Model):
     description = models.TextField(max_length=1023, verbose_name="Описание курса", blank=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=CustomUser, verbose_name="Автор курса")
     is_available = models.BooleanField(default=True, verbose_name="Курс доступен сразу?")
+    steps = models.PositiveSmallIntegerField(default=0, verbose_name="Количество шагов")
     is_free = models.BooleanField(default=False, verbose_name="Бесплатный курс?")
-    price = models.PositiveIntegerField(default=0, verbose_name="Цена за весь курс")
+    full_price = models.PositiveIntegerField(default=0, verbose_name="Цена за весь курс")
+    month_price = models.PositiveSmallIntegerField(default=0, blank=True, null=True,
+                                                   verbose_name="Цена в месяц за курс")
+    course_duration = models.PositiveSmallIntegerField(default=0, verbose_name="Длительность курса (в мес.)")
 
     backplate_color_choices = [
         ("gray", "Серый"),
@@ -43,7 +47,7 @@ class Course(models.Model):
         return "%s" % self.title
 
     def save(self, *args, **kwargs):
-        self.is_free = False if self.price else True
+        self.is_free = False if self.full_price else True
         super().save(*args, **kwargs)
 
 

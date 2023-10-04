@@ -10,12 +10,14 @@
                             <div class="name">{{ course.title }}</div>
                             <div class="author">Автор: {{ course.author.first_name }} {{ course.author.last_name }}</div>
                         </div>
-                        <div class="steps_count">Шагов: N/A</div>
+                        {% if course.steps %}<div class="steps_count">Шагов: {{ course.steps }}</div>{% endif %}
                         <div class="cost">
                             {% if course.is_free %}
                                 Бесплатно
+                            {% elif course.month_price %}
+                                {{ course.month_price }}₽/мес.
                             {% else %}
-                                {{ course.price }} ₽
+                                {{ course.full_price }}₽
                             {% endif %}
                         </div>
                     </div>

@@ -92,18 +92,23 @@ class ExamResultView(LoginRequiredMixin, MenuMixin, DetailView):
     template_name = "examination/exam_result.html"
     context_object_name = "statistics"
 
+    def __init__(self, *kwargs):
+        self.exam = None
+        super().__init__()
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        exam = Examination.objects.get(id=self.kwargs["exam_id"])
         c_def = self.get_user_context(title="Результаты теста" + TITLE_WITH_DOT,
-                                      exam_max_attempts=exam.max_attempts,
-                                      exam_max_result=len(ExaminationQuestion.objects.filter(exam=exam)))
+                                      exam=self.exam,
+                                      exam_max_result=len(ExaminationQuestion.objects.filter(exam=self.exam)),
+                                      lesson=self.object.lesson,
+                                      homework=self.object.lesson.homework)
 
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_object(self, queryset=None):
-        return UserStatistics.objects.get(user=self.request.user, lesson=Lesson.objects.get(
-            homework=Homework.objects.get(exam=Examination.objects.get(id=self.kwargs["exam_id"]))))
+        self.exam = Examination.objects.get(id=self.kwargs["exam_id"])
+        return UserStatistics.objects.get(user=self.request.user, lesson=Lesson.objects.get(homework=Homework.objects.get(exam=self.exam)))
 
 
 def wrong_answer_view(request):

@@ -97,7 +97,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("usermanager:profile")
 
     def get_object(self, queryset=None):
-        return CustomUser.objects.get(pk=self.request.user.id)
+        return self.request.user
 
 
 class ChangeUserPassword(LoginRequiredMixin, UpdateView):

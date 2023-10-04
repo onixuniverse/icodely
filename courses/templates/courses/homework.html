@@ -23,7 +23,7 @@
     </div>
 
     {% if homework.homework_file %}
-        <form action="{% url 'courses:homework' statistics.lesson.course.id statistics.lesson.id statistics.lesson.homework.id %}" method="POST" autocomplete="off" enctype="multipart/form-data">
+        <form action="{% url 'courses:homework' course_id lesson.id homework.id %}" method="POST" autocomplete="off" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="loads_btn">
                 <h4>Файлы к работе</h4>
@@ -51,21 +51,24 @@
     {% endif %}
 
     {% if homework.exam %}
-        <div class="loads_btn">
+        <div class="exam_btn">
             <h4>Тестовое задание</h4>
             <div class="warning">Тестовое задание входит в состав домашнего задания!</div>
+            <nav class="container_buttons">
             {% if statistics.exam_attempts < exam_max_attempts %}
-                <button type="submit"><a href="{% url 'examination:exam' homework.exam.id %}">Решить тест</a></button>
-            {% else %}
-                <button type="submit"><a href="{% url 'examination:exam_result' homework.exam.id %}">Результаты теста</a></button>
+                <a href="{% url 'examination:exam' homework.exam.id %}"><button type="button">Решить тест</button></a>
             {% endif %}
+            {% if statistics.exam_attempts != 0 %}
+                <a href="{% url 'examination:exam_result' homework.exam.id %}"><button type="button">Результаты теста</button></a>
+            {% endif %}
+            </nav>
         </div>
     {% endif %}
 
     <div class="info">
         <h4>Результат</h4>
         <ul>
-            <div class="comment"><li>Баллы домашней работы:</li>{{ statistics.homework_result }}/{{ statistics.lesson.homework.homework_max_result }}</div><br>
+            <div class="comment"><li>Баллы домашней работы:</li>{{ statistics.homework_result }}/{{ homework.homework_max_result }}</div><br>
             <div class="comment"><li>Статус работы:</li>
                 {% if not statistics.is_homework_complete %}
                     Доступно для выполнения
@@ -83,7 +86,7 @@
     </div>
 
     <nav class="container_buttons">
-        <a href="#"><button>Назад</button></a>
+        <a href="{% url 'courses:lesson' course_id lesson.id %}"><button>Назад</button></a>
 <!--        <button type="submit">Сдать работу</button>-->
     </nav>
 {% endblock content %}

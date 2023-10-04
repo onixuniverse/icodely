@@ -18,7 +18,7 @@ class UserStatistics(models.Model):
     is_homework_complete = models.BooleanField(default=False, verbose_name="Д/З сдано? (не менять)")
     is_homework_checked = models.BooleanField(default=False, verbose_name="Д/З проверено?")
     is_lesson_opened = models.BooleanField(default=False, verbose_name="Урок был открыт? (не менять)")
-    status = models.CharField(max_length=15, default="Доступно", verbose_name="Статус")  # TODO: change status system
+    status = models.CharField(max_length=15, default="Доступно", verbose_name="Статус")
 
     class Meta:
         verbose_name = "Статистика"

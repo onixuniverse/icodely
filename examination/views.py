@@ -1,15 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.forms import formset_factory
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DetailView, ListView
+from django.urls import reverse
+from django.views.generic import DetailView
 
 from courses.forms import WrongAnswerByUserForm
-from courses.mixins import MenuMixin
-from courses.models import Homework, Lesson, Course
+from courses.mixins import MenuMixin, UserToCourseAccessMixin, course_access
+from courses.models import Homework, Lesson
 from courses_statistics.models import UserStatistics
 from examination.forms import ExamAnswerForm
 from examination.models import ExaminationQuestion, Examination, ExaminationAnswer
@@ -19,6 +18,7 @@ TITLE_WITH_DOT = " • " + TITLE
 
 
 @login_required
+@course_access
 def exam_view(request, exam_id):
     try:
         exam = Examination.objects.get(id=exam_id)
@@ -57,9 +57,9 @@ def exam_view(request, exam_id):
                     new_answer.user = request.user
                     new_answer.question = question
 
-                new_answer.answer = answer
+                new_answer.answer = answer.lower()
 
-                if answer == question.right_answer:
+                if answer.lower() == question.right_answer.lower():
                     new_answer.is_answer_right = 1
                     amount_right_answers += 1
                 else:
@@ -87,7 +87,7 @@ def exam_view(request, exam_id):
     return render(request, "examination/exam.html", context=context)
 
 
-class ExamResultView(LoginRequiredMixin, MenuMixin, DetailView):
+class ExamResultView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
     model = UserStatistics
     template_name = "examination/exam_result.html"
     context_object_name = "statistics"
@@ -108,9 +108,11 @@ class ExamResultView(LoginRequiredMixin, MenuMixin, DetailView):
 
     def get_object(self, queryset=None):
         self.exam = Examination.objects.get(id=self.kwargs["exam_id"])
-        return UserStatistics.objects.get(user=self.request.user, lesson=Lesson.objects.get(homework=Homework.objects.get(exam=self.exam)))
+        return UserStatistics.objects.get(user=self.request.user,
+                                          lesson=Lesson.objects.get(homework=Homework.objects.get(exam=self.exam)))
 
 
+@login_required
 def wrong_answer_view(request):
     if request.user.is_staff:
         form = WrongAnswerByUserForm(request.POST or None)
@@ -126,5 +128,3 @@ def wrong_answer_view(request):
         }
 
         return render(request, "examination/wrong_answers.html", context=context)
-
-

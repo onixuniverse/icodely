@@ -1,31 +1,21 @@
+import uuid
+
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, DetailView
 
 from courses_statistics.forms import UploadHomeworkFile
 from courses_statistics.models import UserStatistics
-from examination.models import ExaminationAnswer, ExaminationQuestion
-from .forms import AddCourseForm, AddLessonForm
+from .mixins import MenuMixin, UserToCourseAccessMixin
 from .models import Course, Lesson, UserToCourse, InviteUrl, Deadlines, Homework
-from .mixins import MenuMixin, GroupRequiredMixin, UserToCourseAccessMixin
 
 TITLE = "icodely"
 TITLE_WITH_DOT = " • " + TITLE
 
 
-def to_courses_page(request):
-    """Redirect to /courses/"""
-    return HttpResponseRedirect(reverse("courses"))
-
-
-# Index page
-def index_page(request):
-    return render(request, "courses/index.html", {"title": TITLE})
-
-
-# Course & Lessons View
 class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
     """List of all available courses"""
     model = Course
@@ -49,25 +39,6 @@ class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
         return available_courses
 
 
-class TeachersCourses(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, ListView):
-    model = Course
-    template_name = "courses/old_courses_list.html.html"
-    context_object_name = "courses"
-    login_url = reverse_lazy("usermanager:login")
-    group_required = [u'teacher']
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Мои курсы (учитель)")
-
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def get_queryset(self):
-        available_courses = Course.objects.filter(author_id=self.request.user.id)
-
-        return available_courses
-
-
 class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
     model = Course
     template_name = "courses/courses_list.html"
@@ -84,7 +55,7 @@ class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
         return Course.objects.filter(is_available=True).select_related("author")
 
 
-class CourseLessonsDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
+class CourseDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
     """Page of the selected course"""
     model = Course
     template_name = "courses/course.html"
@@ -118,7 +89,7 @@ class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
         return Course.objects.get(id=self.kwargs['course_id'])
 
 
-class ShowLesson(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
+class LessonDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
     """Page of the selected lesson in the course"""
     model = Lesson
     template_name = "courses/lesson.html"
@@ -147,50 +118,7 @@ class ShowLesson(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailV
         return Lesson.objects.get(id=self.kwargs['lesson_id'])
 
 
-# Add new Courses & Lessons
-class AddCourse(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
-    """Page form with adding a new course"""
-    form_class = AddCourseForm
-    template_name = "courses/add_course.html"
-    login_url = reverse_lazy("usermanager:login")
-    group_required = [u"teacher"]
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить курс" + TITLE_WITH_DOT)
-
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def form_valid(self, form):
-        self.obj = form.save(commit=False)
-        self.obj.author = self.request.user
-        self.obj.save()
-
-        return super().form_valid(form)
-
-
-class AddLesson(LoginRequiredMixin, GroupRequiredMixin, MenuMixin, CreateView):
-    """Page of adding a new lesson in a course"""
-    form_class = AddLessonForm
-    template_name = "courses/add_lesson.html"
-    login_url = reverse_lazy("usermanager:login")
-    group_required = [u"teacher"]
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Добавить урок" + TITLE_WITH_DOT)
-
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-
-        return kwargs
-
-
-# Homework
-class HomeworkView(LoginRequiredMixin, MenuMixin, DetailView):
+class HomeworkDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
     model = Homework
     template_name = "courses/homework.html"
     context_object_name = "homework"
@@ -224,13 +152,37 @@ class HomeworkView(LoginRequiredMixin, MenuMixin, DetailView):
 
 
 # Deadlines
-class DeadlineView(LoginRequiredMixin, MenuMixin, ListView):
+class DeadlineListView(LoginRequiredMixin, MenuMixin, ListView):
     model = Deadlines
     template_name = "courses/deadlines.html"
 
 
-# Invite links handlers
+@login_required
+def free_course(request, course_id):
+    """Create invite and redirect to a free course"""
+    course = Course.objects.get(id=course_id)
+
+    try:
+        invite = InviteUrl.objects.get(course=course)
+    except InviteUrl.DoesNotExist:
+        invite = InviteUrl(invite_uuid=uuid.uuid4(), course=course, created_by=request.user)
+        invite.save()
+
+    try:
+        exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk, user=request.user)
+    except UserToCourse.DoesNotExist:
+        exist_access_to_course = None
+
+    if not exist_access_to_course:
+        new_access_to_course = UserToCourse(invite_uuid=invite, user=request.user, course=course)
+        new_access_to_course.save()
+
+    return HttpResponseRedirect(reverse("courses:course", args=[course_id]))
+
+
+@login_required
 def invite_redirect(request):
+    """Checks and redirect to course page if access is exist"""
     if request.user.is_authenticated:
         invite = InviteUrl.objects.get(invite_uuid=request.GET["url"])
 
@@ -249,6 +201,16 @@ def invite_redirect(request):
         return HttpResponseRedirect(reverse("courses:index"))
     else:
         return HttpResponseRedirect(reverse("usermanager:login"))
+
+
+def to_courses_page(request):
+    """Redirect to courses page"""
+    return HttpResponseRedirect(reverse("courses"))
+
+
+def index_page(request):
+    """Render a main page"""
+    return render(request, "courses/index.html", {"title": TITLE})
 
 
 # Errors handler

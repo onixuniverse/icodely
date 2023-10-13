@@ -3,27 +3,43 @@
 {% load mathfilters %}
 
 {% block links %}
-    <link href="{% static 'css/test_result.css' %}" rel="stylesheet">
+<link href="{% static 'css/test_result.css' %}" rel="stylesheet">
 {% endblock links %}
 
 {% block content %}
-        <div class="content">
-            <div class="title">
-                <h2>{{ exam.title }} • {{ lesson.title }}</h2>
+<div class="content">
+    <div class="title">
+        <h2>{{ exam.title }} • {{ lesson.title }}</h2>
+    </div>
+    <div class="info">
+        <h4>Результат</h4>
+        <ul>
+            <div class="comment">
+                <li>Баллы:</li>
+                {{ statistics.exam_result }}/{{ exam_max_result }}
             </div>
-            <div class="info">
-                <h4>Результат</h4>
-                <ul>
-                    <div class="comment"><li>Баллы:</li>{{ statistics.exam_result }}/{{ exam_max_result }}</div><br>
-                    <div class="comment"><li>Процент выполнения:</li>{% widthratio statistics.exam_attempts exam_max_result 100 %}%</div><br>
-                    <div class="comment"><li>Осталось попыток:</li>{{ exam.max_attempts|sub:statistics.exam_attempts }}</div><br>
-                </ul>
+            <br>
+            <div class="comment">
+                <li>Процент выполнения:</li>
+                {% widthratio statistics.exam_result exam_max_result 100 %}%
             </div>
-        </div>
-        <nav class="container_buttons">
-            <a href="{% url 'courses:homework' lesson.course.id lesson.id homework.id %}"><button>Назад</button></a>
-            {% if exam.max_attempts|sub:statistics.exam_attempts > 0 %}
-                <a href="{% url 'examination:exam' exam.id %}"><button>Повторить тест</button></a>
-            {% endif %}
-        </nav>  
+            <br>
+            <div class="comment">
+                <li>Осталось попыток:</li>
+                {{ exam.max_attempts|sub:statistics.exam_attempts }}
+            </div>
+            <br>
+        </ul>
+    </div>
+</div>
+<nav class="container_buttons">
+    <a href="{% url 'courses:homework' lesson.course.id lesson.id homework.id %}">
+        <button>Назад</button>
+    </a>
+    {% if exam.max_attempts|sub:statistics.exam_attempts > 0 %}
+    <a href="{% url 'examination:exam' exam.id %}">
+        <button>Повторить тест</button>
+    </a>
+    {% endif %}
+</nav>
 {% endblock content %}

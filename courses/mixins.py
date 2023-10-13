@@ -1,6 +1,7 @@
 from django.core.exceptions import PermissionDenied
 
-from courses.models import UserToCourse
+from courses.models import UserToCourse, Homework, Lesson
+from examination.models import Examination
 
 menu = [{'text': 'Главная', 'url_name': 'index'},
         {'text': 'Добавить курс', 'url_name': 'addcourse'},
@@ -46,20 +47,33 @@ class GroupRequiredMixin:
         return super(GroupRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
+def course_access(func):
+    def decorator(request, *args, **kwargs):
+        if "course_id" in kwargs.keys():
+            user_to_course_access = UserToCourse.objects.filter(user=request.user, course_id=kwargs['course_id'])
+        elif "exam_id" in kwargs.keys():
+            user_to_course_access = UserToCourse.objects.filter(user=request.user,
+                                                                course=Lesson.objects.get(homework=Homework.objects.get(
+                                                                    exam=Examination.objects.get(
+                                                                        id=kwargs["exam_id"]))).course)
+
+        if not user_to_course_access:
+            raise PermissionDenied
+
+    return decorator
+
+
 class UserToCourseAccessMixin:
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            raise PermissionDenied
-        else:
+        if "course_id" in kwargs.keys():
             user_to_course_access = UserToCourse.objects.filter(user=request.user, course_id=kwargs['course_id'])
+        elif "exam_id" in kwargs.keys():
+            user_to_course_access = UserToCourse.objects.filter(user=request.user,
+                                                                course=Lesson.objects.get(homework=Homework.objects.get(
+                                                                    exam=Examination.objects.get(
+                                                                        id=kwargs["exam_id"]))).course)
 
-            if not user_to_course_access:
-                raise PermissionDenied
+        if not user_to_course_access:
+            raise PermissionDenied
 
         return super(UserToCourseAccessMixin, self).dispatch(request, *args, **kwargs)
-
-
-class StudentMixin:
-    def get_user_context(self, **kwargs):
-        pass
-

@@ -1,14 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.template import loader
 from django.urls import reverse_lazy, reverse
-from django.views import View
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, UpdateView
 
 from courses.mixins import MenuMixin
-from usermanager.forms import RegistrationUserForm, LoginUserForm, ChangeUsersNameForm
+from usermanager.forms import RegistrationUserForm, LoginUserForm
 from usermanager.models import CustomUser
 
 TITLE = "icodely"

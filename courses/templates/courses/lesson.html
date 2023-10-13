@@ -2,44 +2,45 @@
 {% load static %}
 
 {% block links %}
-    <link href="{% static 'css/lesson.css' %}" rel="stylesheet">
+<link href="{% static 'css/lesson.css' %}" rel="stylesheet">
 {% endblock links %}
 
 
 {% block content %}
-    <div class="content">
+<div class="content">
 
-        <div class="title">
-            <h2>{{ lesson.title }}</h2>
-        </div>
-
-        <div class="important_info">
-            {{ lesson.content|safe }}
-        </div>
-
-        {% if lesson.video_youtube %}
-            <div class="videos">
-                <h4>Видео материалы</h4>
-                <iframe  class="video" src="{{ lesson.video_youtube }}"></iframe>
-            </div>
-        {% endif %}
-
-        {% if lesson.pdf_file %}
-            <div class="files">
-                <h4>Учебные материалы</h4>
-                <a class="open_file" href="{{ lesson.pdf_file.url }}" target="_blank"><img src="{% static 'images/pdf_icon.png' %}" width="30px">Открыть файл</a>
-            </div>
-        {% endif %}
+    <div class="title">
+        <h2>{{ lesson.title }}</h2>
     </div>
 
-    <nav class="container_buttons">
-        <a href="{% url 'courses:course' lesson.course.pk %}">
-            <button>Назад</button>
-        </a>
-        {% if lesson.homework %}
-            <a href="{% url 'courses:homework' lesson.course.id lesson.id lesson.homework.id %}">
-                <button>Домашняя работа</button>
-            </a>
-        {% endif %}
-    </nav>
+    <div class="important_info">
+        {{ lesson.content|safe }}
+    </div>
+
+    {% if lesson.video_youtube %}
+    <div class="videos">
+        <h4>Видео материалы</h4>
+        <iframe class="video" src="{{ lesson.video_youtube }}"></iframe>
+    </div>
+    {% endif %}
+
+    {% if lesson.pdf_file %}
+    <div class="files">
+        <h4>Учебные материалы</h4>
+        <a class="open_file" href="{{ lesson.pdf_file.url }}" target="_blank"><img
+                src="{% static 'images/pdf_icon.png' %}" width="30px">Открыть файл</a>
+    </div>
+    {% endif %}
+</div>
+
+<nav class="container_buttons">
+    <a href="{% url 'courses:course' lesson.course.pk %}">
+        <button>Назад</button>
+    </a>
+    {% if lesson.homework %}
+    <a href="{% url 'courses:homework' lesson.course.id lesson.id lesson.homework.id %}">
+        <button>Домашняя работа</button>
+    </a>
+    {% endif %}
+</nav>
 {% endblock content %}

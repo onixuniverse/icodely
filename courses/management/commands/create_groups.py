@@ -3,7 +3,6 @@ import logging
 from django.contrib.auth.models import Group, Permission
 from django.core.management import BaseCommand
 
-
 GROUPS = ["teacher"]
 MODELS_CODENAME = ["course", "lesson", "inviteurl"]
 PERMISSIONS = ["add", "change", "delete", "view"]

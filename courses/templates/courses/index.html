@@ -7,16 +7,16 @@
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     <link href="{% static 'css/transform.css' %}" rel="stylesheet">
     <link href="{% static 'css/main_page.css' %}" rel="stylesheet">
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
 
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>{% block page_name %}{{ title }}{% endblock page_name %}</title>
-    <style type="text/css" media="screen">
+    <style media="screen" type="text/css">
         .cookie_agreement{
             position: fixed;
             right: 25px;
@@ -89,63 +89,64 @@
 </head>
 
 <body>
-    <div class="page">
-        
-        <header class="common_header">
-            <a href="{% url 'courses:index' %}" class="logo_link"><img class="logo" src="{% static 'images/logo.png' %}" ></a>
-        </header>
+<div class="page">
+
+    <header class="common_header">
+        <a class="logo_link" href="{% url 'courses:index' %}"><img class="logo"
+                                                                   src="{% static 'images/logo.png' %}"></a>
+    </header>
 
 
-        <div class="content">
-            <section class="navigation">
-                <a href="{% url 'courses:all_courses' %}">
-                    <div class="wrapper">
-                        <div class = "backplate">
-                            <img class="fan_picture" src="{% static 'images/sticker_1.png' %}">
-                            <div class="caption">Все курсы</div>
-                            <div class="description">Хочешь изучить что-то новое? Тогда тебе сюда!</div>
-                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
-                        </div>
+    <div class="content">
+        <section class="navigation">
+            <a href="{% url 'courses:all_courses' %}">
+                <div class="wrapper">
+                    <div class="backplate">
+                        <img class="fan_picture" src="{% static 'images/sticker_1.png' %}">
+                        <div class="caption">Все курсы</div>
+                        <div class="description">Хочешь изучить что-то новое? Тогда тебе сюда!</div>
+                        <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
                     </div>
-                </a>
+                </div>
+            </a>
 
-                <a href="{% url 'courses:my_courses' %}">
-                    <div class="wrapper">
-                        <div class = "backplate">
-                            <img class="fan_picture" src="{% static 'images/sticker_2.png' %}">
-                            <div class="caption">Мои курсы</div>
-                            <div class="description">Все твои курсы хранятся здесь</div>
-                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
-                        </div>
+            <a href="{% url 'courses:my_courses' %}">
+                <div class="wrapper">
+                    <div class="backplate">
+                        <img class="fan_picture" src="{% static 'images/sticker_2.png' %}">
+                        <div class="caption">Мои курсы</div>
+                        <div class="description">Все твои курсы хранятся здесь</div>
+                        <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
                     </div>
-                </a>
+                </div>
+            </a>
 
-                <a href="{% url 'courses:deadline' %}">
-                    <div class="wrapper">
-                        <div class = "backplate">
-                            <img class="fan_picture" src="{% static 'images/sticker_3.png' %}">
-                            <div class="caption">Дедлайны</div>
-                            <div class="description">Проследи за сроком выполнения заданий</div>
-                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
-                        </div>
+            <a href="{% url 'courses:deadline' %}">
+                <div class="wrapper">
+                    <div class="backplate">
+                        <img class="fan_picture" src="{% static 'images/sticker_3.png' %}">
+                        <div class="caption">Дедлайны</div>
+                        <div class="description">Проследи за сроком выполнения заданий</div>
+                        <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
                     </div>
-                </a>
+                </div>
+            </a>
 
-                <a href="{% url 'usermanager:profile' %}">
-                    <div class="wrapper">
-                        <div class = "backplate">
-                            <img class="fan_picture" src="{% static 'images/sticker_4.png' %}">
-                            <div class="caption">Аккаунт</div>
-                            <div class="description">Манипуляции</div>
-                            <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
-                        </div>
+            <a href="{% url 'usermanager:profile' %}">
+                <div class="wrapper">
+                    <div class="backplate">
+                        <img class="fan_picture" src="{% static 'images/sticker_4.png' %}">
+                        <div class="caption">Аккаунт</div>
+                        <div class="description">Манипуляции</div>
+                        <img class="thematic_picture" src="{% static 'images/arrow.png' %}">
                     </div>
-                </a>
-            </section>
-        </div> 
-       
-        {% include 'courses/footer_base.html' %}
-
+                </div>
+            </a>
+        </section>
     </div>
+
+    {% include 'courses/footer_base.html' %}
+
+</div>
 </body>
 </html>

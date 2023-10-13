@@ -1,36 +1,44 @@
 {% extends 'courses/base.html' %}
 
 {% block content %}
-    <div class="content">
-        <section class="wrapper_courses">
-            {% for course in courses %}
-                <section class="course">
-                    <div class="background_course {{ course.backplate_color }}">
-                        <div class="info_course">
-                            <div class="name">{{ course.title }}</div>
-                            <div class="author">Автор: {{ course.author.first_name }} {{ course.author.last_name }}</div>
-                        </div>
-                        {% if course.steps %}<div class="steps_count">Шагов: {{ course.steps }}</div>{% endif %}
-                        <div class="cost">
-                            {% if course.is_free %}
-                                Бесплатно
-                            {% elif course.month_price %}
-                                {{ course.month_price }}₽/мес.
-                            {% else %}
-                                {{ course.full_price }}₽
-                            {% endif %}
-                        </div>
-                    </div>
-                    <nav class="course_container_buttons">
-                        <a href="{% url 'courses:about_course' course.pk %}">
-                            <button class="btn_details">Подробнее</button>
-                        </a>
-                        <a href="{% url 'courses:about_course' course.pk %}">
-                            <button class="btn_buy_course">Купить</button>
-                        </a>
-                    </nav>
-                </section>
-            {% endfor %}
+<div class="content">
+    <section class="wrapper_courses">
+        {% for course in courses %}
+        <section class="course">
+            <div class="background_course {{ course.backplate_color }}">
+                <div class="info_course">
+                    <div class="name">{{ course.title }}</div>
+                    <div class="author">Автор: {{ course.author.first_name }} {{ course.author.last_name }}</div>
+                </div>
+                {% if course.steps %}
+                <div class="steps_count">Шагов: {{ course.steps }}</div>
+                {% endif %}
+                <div class="cost">
+                    {% if course.is_free %}
+                    Бесплатно
+                    {% elif course.month_price %}
+                    {{ course.month_price }}₽/мес.
+                    {% else %}
+                    {{ course.full_price }}₽
+                    {% endif %}
+                </div>
+            </div>
+            <nav class="course_container_buttons">
+                <a href="{% url 'courses:about_course' course.pk %}">
+                    <button class="btn_details">Подробнее</button>
+                </a>
+                {% if course.is_free %}
+                <a href="{% url 'courses:free_course' course.pk %}">
+                    <button class="btn_buy_course">Начать</button>
+                </a>
+                {% else %}
+                <a href="{% url 'courses:about_course' course.pk %}">
+                    <button class="btn_buy_course">Купить</button>
+                </a>
+                {% endif %}
+            </nav>
         </section>
-    </div>
+        {% endfor %}
+    </section>
+</div>
 {% endblock content %}

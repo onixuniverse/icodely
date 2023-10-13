@@ -9,15 +9,16 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("exams/", include("examination.urls", namespace="examination")),
     path("profile/", include("usermanager.urls", namespace="usermanager")),
-    path('cookie_consent/', include('cookie_consent.urls')),
+
+    path('cookies/', include('cookie_consent.urls')),
 ]
 
 handler404 = "courses.views.page_not_found_404"
 
 if settings.DEBUG:
     urlpatterns = [
-        # ...
-        path("__debug__/", include("debug_toolbar.urls")),
-    ] + urlpatterns
+                      # ...
+                      path("__debug__/", include("debug_toolbar.urls")),
+                  ] + urlpatterns
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

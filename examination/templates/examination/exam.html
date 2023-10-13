@@ -2,45 +2,48 @@
 {% load static %}
 
 {% block links %}
-    <link href="{% static 'css/examination.css' %}" rel="stylesheet">
+<link href="{% static 'css/examination.css' %}" rel="stylesheet">
 {% endblock links %}
 
 {% block content %}
 <div class="content">
-        <div class="wrapper_question">
-            <form action="{% url 'examination:exam' exam_id %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
+    <div class="wrapper_question">
+        <form action="{% url 'examination:exam' exam_id %}" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
 
-                {% for answer_entry, question in ans_quest_array %}
-                    <section class="body_question {% if forloop.counter == 1 %}active{% endif %}" id="id_form-{{ forloop.counter }}-answer">
-                        <h4>Задание {{ forloop.counter }}</h4>
-                        <div class="text_question">{{ question }}</div>
-                        {% if question.question_image %}
-                            <img class="img_question" src="{{ question.question_image.url }}">
-                        {% endif %}
-                        <div class="group_answer_question">
-                            {{ answer_entry.answer }}
-                            <div class="btn_save_answer">Сохранить ответ</div>
-                        </div>
-                    </section>
-                {% endfor %}
+            {% for answer_entry, question in ans_quest_array %}
+            <section class="body_question {% if forloop.counter == 1 %}active{% endif %}"
+                     id="id_form-{{ forloop.counter }}-answer">
+                <h4>Задание {{ forloop.counter }}</h4>
+                <div class="text_question">{{ question }}</div>
+                {% if question.question_image %}
+                <img class="img_question" src="{{ question.question_image.url }}">
+                {% endif %}
+                <div class="group_answer_question">
+                    {{ answer_entry.answer }}
+                    <div class="btn_save_answer">Сохранить ответ</div>
+                </div>
+            </section>
+            {% endfor %}
 
-                <section class="body_question" id="send_test">
-                    <h4>{{ exam_title }}</h4>
-                    <div class="text_question">Это был последний вопрос, ты можешь завершить тест или еще раз подумать над ответами</div>
-                    <img class="send_test_img" src="{% static 'images/exam_end.png' %}">
-                    <div class="group_answer_question">
-                        <button type="submit" class="btn_save_answer">Завершить тест</button>
-                    </div>
-                </section>
-            </form>
-        </div>
+            <section class="body_question" id="send_test">
+                <h4>{{ exam_title }}</h4>
+                <div class="text_question">Это был последний вопрос, ты можешь завершить тест или еще раз подумать над
+                    ответами
+                </div>
+                <img class="send_test_img" src="{% static 'images/exam_end.png' %}">
+                <div class="group_answer_question">
+                    <button class="btn_save_answer" tabindex="-1" type="submit">Завершить тест</button>
+                </div>
+            </section>
+        </form>
     </div>
+</div>
 
-    <nav class="btns_pre_next">
-        <div class="btn_question  previous"><img src="{% static 'images/arrow_red.png' %}"></div>
-        <div class="btn_question  next"><img src="{% static 'images/arrow_red.png' %}"></div>
-    </nav>
+<nav class="btns_pre_next">
+    <div class="btn_question  previous"><img src="{% static 'images/arrow_red.png' %}"></div>
+    <div class="btn_question  next"><img src="{% static 'images/arrow_red.png' %}"></div>
+</nav>
 
 <script type="text/javascript">
     const toggle_next = document.querySelector('.next');

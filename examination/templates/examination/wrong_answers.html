@@ -5,18 +5,19 @@
     <title>Wrong User Answers</title>
 </head>
 <body>
-     <form method="POST" enctype="multipart/form-data">
-         {% csrf_token %}
-         {{ form }}
-         <button type="submit">Поиск</button>
-     </form>
-    <br>
-    <br>
-    <br>
-    {% for el in wrong_answers %}
-        {{ forloop.counter}}) {{ el.question }}{% if el.question.question_image %} <br> <img src="{{ el.question.question_image.url }}" width="400px"> {% endif %}<br>Ответ: {{ el.answer }}
-        <br>
-        <br>
-    {% endfor %}
+<form enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Поиск</button>
+</form>
+<br>
+<br>
+<br>
+{% for el in wrong_answers %}
+{{ forloop.counter}}) {{ el.question }}{% if el.question.question_image %} <br> <img
+        src="{{ el.question.question_image.url }}" width="400px"> {% endif %}<br>Ответ: {{ el.answer }}
+<br>
+<br>
+{% endfor %}
 </body>
 </html>

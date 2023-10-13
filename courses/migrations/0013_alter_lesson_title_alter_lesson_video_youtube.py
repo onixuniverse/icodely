@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('courses', '0012_remove_lesson_description_lesson_short_description'),
     ]
@@ -18,6 +17,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='lesson',
             name='video_youtube',
-            field=models.CharField(blank=True, default=None, max_length=127, null=True, verbose_name='EMBED-ссылка на видео с Youtube'),
+            field=models.CharField(blank=True, default=None, max_length=127, null=True,
+                                   verbose_name='EMBED-ссылка на видео с Youtube'),
         ),
     ]

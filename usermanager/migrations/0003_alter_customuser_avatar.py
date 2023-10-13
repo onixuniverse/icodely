@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('usermanager', '0002_customuser_avatar'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='customuser',
             name='avatar',
-            field=models.ImageField(default='media/default_media/avatars/default_user_avatar.png', upload_to='media/usermanager/avatars/'),
+            field=models.ImageField(default='media/default_media/avatars/default_user_avatar.png',
+                                    upload_to='media/usermanager/avatars/'),
         ),
     ]

@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('courses', '0004_alter_inviteurl_url'),
     ]
@@ -13,6 +12,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='inviteurl',
             name='url',
-            field=models.CharField(default='https://icodely.ru/invite?url=<bound method Field.value_from_object of <django.db.models.fields.UUIDField>>', max_length=127),
+            field=models.CharField(
+                default='https://icodely.ru/invite?url=<bound method Field.value_from_object of <django.db.models.fields.UUIDField>>',
+                max_length=127),
         ),
     ]

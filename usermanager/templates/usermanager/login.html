@@ -1,46 +1,46 @@
 {% extends 'usermanager/login_base.html' %}
 
 {% block page_name %}
-    Авторизация • icodely
+Авторизация • icodely
 {% endblock page_name %}
 
 {% block login_form %}
 
 
-    <div class="wrapper_log">
-        <form autocomplete="off" method="POST" id="loginForm">
-            {% csrf_token %}
-            <h2>Авторизация</h2>
-            {% for field in form.visible_fields %}
-                {% if not forloop.last %}
-                    <div class="input-group">
+<div class="wrapper_log">
+    <form autocomplete="off" id="loginForm" method="POST">
+        {% csrf_token %}
+        <h2>Авторизация</h2>
+        {% for field in form.visible_fields %}
+        {% if not forloop.last %}
+        <div class="input-group">
 
-                        {{ field }}
-                        {{ field.label_tag }}
+            {{ field }}
+            {{ field.label_tag }}
 
-                        {% if field.name == 'username' %}
-                            <span class="icon">
+            {% if field.name == 'username' %}
+            <span class="icon">
                                 <i class="fa-regular fa-user"></i>
                             </span>
-                        {% elif field.name == 'password' %}
-                            <span class="icon" id="toggle_password">
+            {% elif field.name == 'password' %}
+            <span class="icon" id="toggle_password">
                                 <i class="far fa-eye-slash"></i>
                             </span>
-                        {% endif %}
+            {% endif %}
 
-                        <span class="line"></span>
-                    </div>
-                {% endif %}
-            {{ field.errors }}
-            {% endfor %}
-            <div class="check">
-                <label>{{ form.remember_me }} Запомнить меня</label>
-                <a href="#">Забыли пароль?</a>
-            </div>
-            <button type="submit">Войти</button>
-            <div class="register">
-                <p>Нет аккаунта? <a href="{% url 'usermanager:signup' %}">Зарегистрироваться</a></p>
-            </div>
-        </form>
-    </div>
+            <span class="line"></span>
+        </div>
+        {% endif %}
+        {{ field.errors }}
+        {% endfor %}
+        <div class="check">
+            <label>{{ form.remember_me }} Запомнить меня</label>
+            <a href="#">Забыли пароль?</a>
+        </div>
+        <button type="submit">Войти</button>
+        <div class="register">
+            <p>Нет аккаунта? <a href="{% url 'usermanager:signup' %}">Зарегистрироваться</a></p>
+        </div>
+    </form>
+</div>
 {% endblock login_form %}

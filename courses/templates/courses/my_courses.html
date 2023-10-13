@@ -2,28 +2,28 @@
 {% load static %}
 
 {% block links %}
-    <link href="{% static 'css/my_courses.css' %}" rel="stylesheet">
+<link href="{% static 'css/my_courses.css' %}" rel="stylesheet">
 {% endblock links %}
 
 {% block content %}
-    <div class="content">
-        <section class="wrapper_courses">
+<div class="content">
+    <section class="wrapper_courses">
 
-            {% for course in courses %}
-                <section class="course">
-                    <div class="background_course {{ course.backplate_color }}">
-                        <div class="info_course">
-                            <div class="name">{{ course.title }}</div>
-                            <div class="author"> Автор: {{ course.author.first_name }} {{ course.author.last_name }}</div>
-                        </div>
-                        <div class="progress">N/A %</div>
-                    </div>
-                    <a href="{% url 'courses:course' course.pk %}">
-                        <button class="btn_start">К выполнению</button>
-                    </a>
-                </section>
-            {% endfor %}
-
+        {% for course in courses %}
+        <section class="course">
+            <div class="background_course {{ course.backplate_color }}">
+                <div class="info_course">
+                    <div class="name">{{ course.title }}</div>
+                    <div class="author"> Автор: {{ course.author.first_name }} {{ course.author.last_name }}</div>
+                </div>
+                <div class="progress">N/A %</div>
+            </div>
+            <a href="{% url 'courses:course' course.pk %}">
+                <button class="btn_start">К выполнению</button>
+            </a>
         </section>
-    </div>
+        {% endfor %}
+
+    </section>
+</div>
 {% endblock content %}

@@ -1,34 +1,35 @@
 {% load static %}
-<script type="text/javascript" src="{% static 'cookie_consent/cookiebar.js' %}"></script>
+<script src="{% static 'cookie_consent/cookiebar.js' %}" type="text/javascript"></script>
 
 {% load cookie_consent_tags %}
 {% if request|cookie_consent_enabled %}
-    {% not_accepted_or_declined_cookie_groups request as cookie_groups %}
-    {% if cookie_groups %}
-        {% url "cookie_consent_cookie_group_list" as url_cookies %}
-        {% cookie_consent_accept_url cookie_groups as url_accept %}
-        {% cookie_consent_decline_url cookie_groups as url_decline %}
-        <script type="text/javascript">
-            var cookie_groups = [];
-            {% for cookie_group in cookie_groups %}
-                cookie_groups.push("{{ cookie_group.varname }}");
-            {% endfor %}
-            function ready(fn) {
-                if (document.readyState != 'loading') {
-                    fn();
-                } else if (document.addEventListener) {
-                    document.addEventListener('DOMContentLoaded', fn);
-                } else {
-                    document.attachEvent('onreadystatechange', function() {
-                    if (document.readyState != 'loading')
-                        fn();});}}
-            ready(function() {
-                showCookieBar({
-                    content: "{% filter escapejs %}{% with cookie_groups=cookie_groups|join:", " %}<div class="cookie_agreement"><h4>Мы используем файлы cookie</h4><p>Оставаясь с нами, вы соглашаетесь на использование <a class="hyperlink" href="{{ url_cookies }}">файлов cookie</a></p><a class="btn_cookie cc-cookie-accept" href="{{ url_accept }}"><div class="btn_cookie_text">Ок</div></a></div>{% endwith %}{% endfilter %}",
-                    cookie_groups: cookie_groups,
-                    cookie_decline: "{% get_decline_cookie_groups_cookie_string request cookie_groups %}",
-                    beforeDeclined: function() {
-                    document.cookie = "{% get_decline_cookie_groups_cookie_string request cookie_groups %}";
-                    }});});</script>
-    {% endif %}
+{% not_accepted_or_declined_cookie_groups request as cookie_groups %}
+{% if cookie_groups %}
+{% url "cookie_consent_cookie_group_list" as url_cookies %}
+{% cookie_consent_accept_url cookie_groups as url_accept %}
+{% cookie_consent_decline_url cookie_groups as url_decline %}
+<script type="text/javascript">
+    var cookie_groups = [];
+    {% for cookie_group in cookie_groups %}
+        cookie_groups.push("{{ cookie_group.varname }}");
+    {% endfor %}
+    function ready(fn) {
+        if (document.readyState != 'loading') {
+            fn();
+        } else if (document.addEventListener) {
+            document.addEventListener('DOMContentLoaded', fn);
+        } else {
+            document.attachEvent('onreadystatechange', function() {
+            if (document.readyState != 'loading')
+                fn();});}}
+    ready(function() {
+        showCookieBar({
+            content: "{% filter escapejs %}{% with cookie_groups=cookie_groups|join:", " %}<div class="cookie_agreement"><h4>Мы используем файлы cookie</h4><p>Оставаясь с нами, вы соглашаетесь на использование <a class="hyperlink" href="{{ url_cookies }}">файлов cookie</a></p><a class="btn_cookie cc-cookie-accept" href="{{ url_accept }}"><div class="btn_cookie_text">Ок</div></a></div>{% endwith %}{% endfilter %}",
+            cookie_groups: cookie_groups,
+            cookie_decline: "{% get_decline_cookie_groups_cookie_string request cookie_groups %}",
+            beforeDeclined: function() {
+            document.cookie = "{% get_decline_cookie_groups_cookie_string request cookie_groups %}";
+            }});});
+</script>
+{% endif %}
 {% endif %}

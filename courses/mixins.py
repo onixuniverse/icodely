@@ -59,6 +59,8 @@ def course_access(func):
 
         if not user_to_course_access:
             raise PermissionDenied
+        else:
+            return func(request, *args, **kwargs)
 
     return decorator
 

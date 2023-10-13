@@ -9,7 +9,7 @@
 {% block content %}
 <div class="content">
     <section class="wrapper_courses">
-        {% for lesson in lessons %}
+        {% for lesson, stats in lessons_stats_zip %}
         <section class="course">
             <div class="wrapper_step">
                 <div class="number_step">Шаг {{ forloop.counter }}</div>
@@ -17,11 +17,15 @@
             <div class="background_course">
                 <div class="name">{{ lesson.title }}</div>
                 <div class="about_step">{{ lesson.short_description }}</div>
-                <!--                        <div class="wrapper_status">-->
-                <!--                            <div class="status done">-->
-                <!--                                {{ lesson_statuses }}-->
-                <!--                            </div>-->
-                <!--                        </div>-->
+                <div class="wrapper_status">
+                    <div class="status {% if stats.status == 'В работе' %}in_progress{% elif stats.status == 'Не доступен' %}unavailable{% else %}done{% endif %}">
+                        {% if stats %}
+                            {{ stats.status }}
+                        {% else %}
+                            Доступен
+                        {% endif %}
+                    </div>
+                </div>
             </div>
             <a href="{% url 'courses:lesson' course.pk lesson.pk %}">
                 <button class="btn_start">Выполнить</button>

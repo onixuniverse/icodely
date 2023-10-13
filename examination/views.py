@@ -6,11 +6,10 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import DetailView
 
-from courses.forms import WrongAnswerByUserForm
 from courses.mixins import MenuMixin, UserToCourseAccessMixin, course_access
 from courses.models import Homework, Lesson
 from courses_statistics.models import UserStatistics
-from examination.forms import ExamAnswerForm
+from examination.forms import ExamAnswerForm, WrongAnswerByUserForm
 from examination.models import ExaminationQuestion, Examination, ExaminationAnswer
 
 TITLE = "icodely"
@@ -119,8 +118,10 @@ def wrong_answer_view(request):
         wrong_answers = []
         if request.POST and form.is_valid():
             user = form.cleaned_data["user"]
+            exam = form.cleaned_data["exam"]
 
-            wrong_answers = ExaminationAnswer.objects.filter(user=user, is_answer_right=0)
+            questions = ExaminationQuestion.objects.filter(exam=exam)
+            wrong_answers = ExaminationAnswer.objects.filter(question__in=questions, user=user, is_answer_right=0)
 
         context = {
             "form": form,

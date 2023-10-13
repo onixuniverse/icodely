@@ -1,4 +1,5 @@
 import uuid
+from itertools import zip_longest
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,6 +15,22 @@ from .models import Course, Lesson, UserToCourse, InviteUrl, Deadlines, Homework
 
 TITLE = "icodely"
 TITLE_WITH_DOT = " • " + TITLE
+
+
+class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
+    model = Course
+    template_name = "courses/courses_list.html"
+    context_object_name = "courses"
+    login_url = reverse_lazy("usermanager:login")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Все курсы" + TITLE_WITH_DOT)
+
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_queryset(self):
+        return Course.objects.filter(is_available=True).select_related("author")
 
 
 class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
@@ -39,40 +56,6 @@ class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
         return available_courses
 
 
-class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
-    model = Course
-    template_name = "courses/courses_list.html"
-    context_object_name = "courses"
-    login_url = reverse_lazy("usermanager:login")
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Все курсы" + TITLE_WITH_DOT)
-
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def get_queryset(self):
-        return Course.objects.filter(is_available=True).select_related("author")
-
-
-class CourseDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
-    """Page of the selected course"""
-    model = Course
-    template_name = "courses/course.html"
-    context_object_name = "course"
-    login_url = reverse_lazy("usermanager:login")
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT,
-                                      lessons=Lesson.objects.filter(course_id=self.kwargs['course_id']))
-
-        context = super().get_context_data(**kwargs)
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def get_object(self, query_set=None):
-        return Course.objects.get(id=self.kwargs['course_id'])
-
-
 class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
     model = Course
     template_name = "courses/about_course.html"
@@ -89,8 +72,33 @@ class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
         return Course.objects.get(id=self.kwargs['course_id'])
 
 
+class CourseDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
+    model = Course
+    template_name = "courses/course.html"
+    context_object_name = "course"
+    login_url = reverse_lazy("usermanager:login")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        lessons = Lesson.objects.filter(course_id=self.kwargs['course_id'])
+        lessons_stats_zip = []
+
+        for lesson in lessons:
+            try:
+                lessons_stats_zip.append((lesson, UserStatistics.objects.get(user=self.request.user, lesson=lesson)))
+            except UserStatistics.DoesNotExist:
+                lessons_stats_zip.append((lesson, None))
+
+        c_def = self.get_user_context(title=kwargs['object'].title + TITLE_WITH_DOT,
+                                      lessons_stats_zip=lessons_stats_zip)
+
+        context = super().get_context_data(**kwargs)
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_object(self, query_set=None):
+        return Course.objects.get(id=self.kwargs['course_id'])
+
+
 class LessonDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
-    """Page of the selected lesson in the course"""
     model = Lesson
     template_name = "courses/lesson.html"
     context_object_name = "lesson"
@@ -105,9 +113,8 @@ class LessonDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, D
             user_statistics = UserStatistics(user=self.request.user, lesson=self.object)
             user_statistics.save()
 
-        if not user_statistics.is_lesson_opened:
-            user_statistics.is_lesson_opened = 1
-            user_statistics.save()
+        user_statistics.is_lesson_opened = True
+        user_statistics.save()
 
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=self.object.title + TITLE_WITH_DOT)

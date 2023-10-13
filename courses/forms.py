@@ -25,11 +25,3 @@ class AddLessonForm(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = ["course", "title", "content", "videos"]
-
-
-class WrongAnswerByUserForm(forms.ModelForm):
-    user = forms.ModelChoiceField(queryset=CustomUser.objects.all().order_by("last_name"))
-
-    class Meta:
-        model = CustomUser
-        fields = ["id"]

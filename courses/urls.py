@@ -17,10 +17,6 @@ urlpatterns = [
          views.HomeworkDetailView.as_view(),
          name="homework"),
 
-    # path("courses/teacher/my", views.TeachersCourses.as_view(), name="teacher_course"),
-    # path("courses/new/", views.AddCourse.as_view(), name="addcourse"),
-    # path("courses/<int:course_id>/lessons/new/", views.AddLesson.as_view(), name="addlesson"),
-
     path("deadlines/", views.DeadlineListView.as_view(), name="deadline"),
 
     path("invite/", views.invite_redirect, name="invite"),

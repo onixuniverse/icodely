@@ -1,9 +1,8 @@
 import uuid
-from itertools import zip_longest
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView
@@ -34,15 +33,26 @@ class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
 
 
 class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
-    """List of all available courses"""
     model = Course
     template_name = "courses/my_courses.html"
     context_object_name = "courses"
     login_url = reverse_lazy("usermanager:login")
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        course_progress = []
+        for obj in self.object_list:
+            lessons_by_course = Lesson.objects.filter(course=obj)
+            user_course_stat = UserStatistics.objects.filter(user=self.request.user, lesson__in=lessons_by_course)
+            passed_lessons = 0
+            for el in user_course_stat:
+                if el.is_complete:
+                    passed_lessons += 1
+
+            course_progress.append((round((passed_lessons / len(lessons_by_course)) * 100)) if passed_lessons != 0 else 0)
+
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Мои курсы" + TITLE_WITH_DOT)
+        c_def = self.get_user_context(title="Мои курсы" + TITLE_WITH_DOT,
+                                      courses_progress=zip(self.object_list, course_progress))
 
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -106,8 +116,7 @@ class LessonDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, D
 
     def get_context_data(self, *, object_list=None, **kwargs):
         try:
-            user_statistics = UserStatistics.objects.get(user=self.request.user,
-                                                         lesson=self.object)
+            user_statistics = UserStatistics.objects.get(user=self.request.user, lesson=self.object)
 
         except UserStatistics.DoesNotExist:
             user_statistics = UserStatistics(user=self.request.user, lesson=self.object)
@@ -189,25 +198,21 @@ def free_course(request, course_id):
 
 @login_required
 def invite_redirect(request):
-    """Checks and redirect to course page if access is exist"""
-    if request.user.is_authenticated:
-        invite = InviteUrl.objects.get(invite_uuid=request.GET["url"])
+    invite = InviteUrl.objects.get(invite_uuid=request.GET["url"])
 
-        if invite:
-            try:
-                exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk, user=request.user)
-            except UserToCourse.DoesNotExist:
-                exist_access_to_course = None
+    if not invite:
+        raise Http404
 
-            if not exist_access_to_course:
-                new_access_to_course = UserToCourse(invite_uuid=invite, user=request.user, course=invite.course)
-                new_access_to_course.save()
+    try:
+        exist_access_to_course = UserToCourse.objects.get(invite_uuid=invite.pk, user=request.user)
+    except UserToCourse.DoesNotExist:
+        exist_access_to_course = None
 
-                return HttpResponseRedirect(reverse("courses:course", args=[invite.course.id]))
+    if not exist_access_to_course:
+        new_access_to_course = UserToCourse(invite_uuid=invite, user=request.user, course=invite.course)
+        new_access_to_course.save()
 
-        return HttpResponseRedirect(reverse("courses:index"))
-    else:
-        return HttpResponseRedirect(reverse("usermanager:login"))
+        return HttpResponseRedirect(reverse("courses:course", args=[invite.course.id]))
 
 
 def to_courses_page(request):
@@ -221,16 +226,37 @@ def index_page(request):
 
 
 # Errors handler
+def page_forbidden_403(request, exception):
+    context = {
+        "title": "Доступ запрещен" + TITLE_WITH_DOT,
+        "content": "Доступ запрещен"
+    }
+
+    return render(request, "courses/http_error.html", context=context, status=403)
+
+
 def page_not_found_404(request, exception):
     context = {
-        "title": "404 - Страница не найдена" + TITLE_WITH_DOT
+        "title": "Страница не найден" + TITLE_WITH_DOT,
+        "content": "Страница не найдена"
     }
-    return render(request, "courses/404.html", context=context, status=404)
+
+    return render(request, "courses/http_error.html", context=context, status=404)
 
 
-def page_internal_error_500(request, exception):
+def page_method_not_allow_405(request, exception):
     context = {
-        "title": "500 - Ошибка сервера" + TITLE_WITH_DOT
+        "title": "Метод не разрешен" + TITLE_WITH_DOT,
+        "content": "Метод не разрешен"
     }
 
-    return render(request, "courses/500.html", context=context, status=500)
+    return render(request, "courses/http_error.html", context=context, status=405)
+
+
+def page_internal_error_500(request):
+    context = {
+        "title": "Внутренняя ошибка сервера" + TITLE_WITH_DOT,
+        "content": "Внутренняя ошибка сервера"
+    }
+
+    return render(request, "courses/http_error.html", context=context, status=500)

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import formset_factory
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import DetailView
@@ -23,7 +23,7 @@ def exam_view(request, exam_id):
         exam = Examination.objects.get(id=exam_id)
         questions = ExaminationQuestion.objects.filter(exam=exam)
     except Examination.DoesNotExist:
-        return HttpResponseRedirect(reverse("courses:index"))  # TODO: 404 redirect
+        raise Http404
 
     homework = Homework.objects.get(exam=exam)
     lesson = Lesson.objects.get(homework=homework)
@@ -70,12 +70,12 @@ def exam_view(request, exam_id):
             user_statistics.is_exam_complete = True
             user_statistics.save()
 
-            redirect_to = reverse("examination:exam_result", args=[exam_id])
-            return HttpResponseRedirect(redirect_to)
+            return HttpResponseRedirect(reverse("examination:exam_result", args=[exam_id]))
         else:
             formset_errors = formset.errors
 
     context = {
+        "title": exam.title + TITLE_WITH_DOT,
         "exam_id": exam_id,
         "exam_title": exam.title,
         "formset": formset,

@@ -13,7 +13,10 @@ urlpatterns = [
     path('cookies/', include('cookie_consent.urls')),
 ]
 
+handler403 = "courses.views.page_forbidden_403"
 handler404 = "courses.views.page_not_found_404"
+handler405 = "courses.views.page_method_not_allow_405"
+handler500 = "courses.views.page_internal_error_500"
 
 if settings.DEBUG:
     urlpatterns = [

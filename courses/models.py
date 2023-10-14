@@ -7,11 +7,6 @@ from examination.models import Examination
 from usermanager.models import CustomUser
 
 
-class BackplateCourseColor(models.Model):
-    title = models.CharField(max_length=15, verbose_name="Название цвета")
-    code_name = models.CharField(max_length=15, verbose_name="Код цвета")
-
-
 class Course(models.Model):
     title = models.CharField(max_length=63, verbose_name="Название курса")
     short_description = models.CharField(max_length=53, blank=True, null=True, verbose_name="Краткое описание")
@@ -46,6 +41,8 @@ class Course(models.Model):
 
     def save(self, *args, **kwargs):
         self.is_free = False if self.full_price else True
+        self.steps = len(Lesson.objects.filter(course=self))
+
         super().save(*args, **kwargs)
 
 

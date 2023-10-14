@@ -23,6 +23,7 @@ class UserStatistics(models.Model):
     is_lesson_opened = models.BooleanField(default=False, verbose_name="Урок был открыт? (не менять)")
     last_time_lesson_opened = models.DateTimeField(auto_now=True, verbose_name="Последний заход на урок (не менять)")
     status = models.CharField(max_length=15, default="Доступен", verbose_name="Статус")
+    is_complete = models.BooleanField(default=False, verbose_name="Выполнено? (не менять)")
 
     def save(self, *args, **kwargs):
         if self.lesson.homework:
@@ -37,6 +38,7 @@ class UserStatistics(models.Model):
 
             if not self.is_homework and self.is_lesson_opened:
                 self.status = "Выполнено"
+                self.is_complete = True
 
         if self.is_written_homework:
             if self.is_homework_complete:
@@ -47,12 +49,15 @@ class UserStatistics(models.Model):
         if ((self.is_homework_has_exam and self.is_exam_complete) and
                 (self.is_written_homework and self.is_homework_checked)):
             self.status = "Выполнено"
+            self.is_complete = True
 
         if not self.is_homework_has_exam and (self.is_written_homework and self.is_homework_checked):
             self.status = "Выполнено"
+            self.is_complete = True
 
         if (self.is_homework_has_exam and self.is_exam_complete) and not self.is_written_homework:
             self.status = "Выполнено"
+            self.is_complete = True
 
         super().save(*args, **kwargs)
 

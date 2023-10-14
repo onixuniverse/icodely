@@ -9,14 +9,14 @@
 <div class="content">
     <section class="wrapper_courses">
 
-        {% for course in courses %}
+        {% for course, progress in courses_progress %}
         <section class="course">
             <div class="background_course {{ course.backplate_color }}">
                 <div class="info_course">
                     <div class="name">{{ course.title }}</div>
                     <div class="author"> Автор: {{ course.author.first_name }} {{ course.author.last_name }}</div>
                 </div>
-                <div class="progress">N/A %</div>
+                <div class="progress">{{ progress }} %</div>
             </div>
             <a href="{% url 'courses:course' course.pk %}">
                 <button class="btn_start">К выполнению</button>

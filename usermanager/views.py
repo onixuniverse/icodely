@@ -5,7 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
 from courses.mixins import MenuMixin
-from usermanager.forms import RegistrationUserForm, LoginUserForm
+from usermanager.forms import UserRegistrationForm, UserLoginForm
 from usermanager.models import CustomUser
 
 TITLE = "icodely"
@@ -14,7 +14,7 @@ TITLE_WITH_DOT = " • " + TITLE
 
 class RegistrationUser(MenuMixin, CreateView):
     """User registration page"""
-    form_class = RegistrationUserForm
+    form_class = UserRegistrationForm
     template_name = "usermanager/registration.html"
     success_url = reverse_lazy("usermanager:login")
 
@@ -40,7 +40,7 @@ class RegistrationUser(MenuMixin, CreateView):
 
 class LoginUser(MenuMixin, LoginView):
     """User login page"""
-    form_class = LoginUserForm
+    form_class = UserLoginForm
     template_name = "usermanager/login.html"
 
     def form_valid(self, form):

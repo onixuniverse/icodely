@@ -6,10 +6,11 @@
 
 {% block login_form %}
 <div class="wrapper_reg">
-    <form autocomplete="off" id="registerForm" method="POST">
+    <form action="{% url 'usermanager:signup' %}" autocomplete="off" id="registerForm" method="POST">
         {% csrf_token %}
         <h2>Регистрация</h2>
         {% for field in form.visible_fields %}
+        {% if not forloop.last %}
 
         <div class="input-group">
 
@@ -37,11 +38,13 @@
             <span class="line"></span>
         </div>
         {{ field.errors }}
+        {% endif %}
         {% endfor %}
         <button type="submit">Подтвердить</button>
         <div class="register">
             <p>Уже есть аккаунт? <a href="{% url 'usermanager:login' %}">Войти</a></p>
         </div>
+        {{ form.captcha }}
     </form>
 </div>
 {% endblock login_form %}

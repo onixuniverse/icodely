@@ -12,6 +12,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["icodely.ru", "localhost"]
 
+# Debug toolbar
 INTERNAL_IPS = [
     # ...
     "localhost:8000",
@@ -20,8 +21,8 @@ INTERNAL_IPS = [
 ]
 
 INSTALLED_APPS = [
-    "usermanager",
-    "cookie_consent",
+    'usermanager',
+    'cookie_consent',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,12 +30,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "courses",
-    "examination",
-    "courses_statistics",
-    "debug_toolbar",
-    "mathfilters",
-    # "captcha",
+    'courses',
+    'examination',
+    'courses_statistics',
+    'mathfilters',
+    'captcha',
+
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +107,10 @@ USE_I18N = True
 USE_TZ = True
 
 LOGIN_URL = "usermanager:login"
+
+# SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")

@@ -1,8 +1,6 @@
 media/uploads/
 venv/
-templates/courses/old/
-migrations/
-req_dev.txt
+./req_dev.txt
 
 
 # Byte-compiled / optimized / DLL files

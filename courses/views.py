@@ -159,8 +159,6 @@ class HomeworkDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin,
         return dict(list(context.items()) + list(c_def.items()))
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
-
         return redirect("courses:homework", kwargs['course_id'], kwargs["lesson_id"], kwargs["homework_id"])
 
     def get_object(self, queryset=None):

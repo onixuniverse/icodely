@@ -5,7 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
 from courses.mixins import MenuMixin
-from usermanager.forms import UserRegistrationForm, UserLoginForm
+from usermanager.forms import UserRegistrationForm, UserLoginForm, ProfileUpdateForm
 from usermanager.models import CustomUser
 
 TITLE = "icodely"
@@ -88,7 +88,7 @@ class LogoutUser(LoginRequiredMixin, LogoutView):
 
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = CustomUser
-    fields = ["email", "first_name", "last_name"]
+    form_class = ProfileUpdateForm
     template_name = "usermanager/profile.html"
     login_url = reverse_lazy("usermanager:login")
     success_url = reverse_lazy("usermanager:profile")

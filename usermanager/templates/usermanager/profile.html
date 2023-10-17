@@ -15,11 +15,14 @@
         <a href="{% url 'usermanager:logout' %}">
             <button class="exit">Выйти</button>
         </a>
-        <form action="{% url 'usermanager:profile' %}" class="user_data" method="POST">
+        <form action="{% url 'usermanager:profile' %}" class="user_data" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="ava_container">
                 <div class="user_avatar">
                     <img alt="{{ user.avatar }}" class="avatar" src="{{ user.avatar.url }}">
+                    <label for="id_avatar" class="custom-avatar-upload" style="position:absolute;display: inline-block;padding: 64px 64px;cursor: pointer;">
+                        <input type="file" name="avatar" accept="image/*" id="id_avatar" style="display: none;">
+                    </label>
                 </div>
                 <div class="name_id_container">
                     <div class="user_name">

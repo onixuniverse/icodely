@@ -14,8 +14,11 @@
 <br>
 <br>
 {% for el in wrong_answers %}
-{{ forloop.counter}}) {{ el.question }}{% if el.question.question_image %} <br> <img
-        src="{{ el.question.question_image.url }}" width="400px"> {% endif %}<br>Ответ: {{ el.answer }}
+{{ forloop.counter}}) {{ el.question }}{% if el.question.question_image %} <br> <img src="{{ el.question.question_image.url }}" width="400px"> {% endif %}
+<br>
+Ответ: {{ el.answer }}
+<br>
+Правильный: {{ el.is_answer_right }}
 <br>
 <br>
 {% endfor %}

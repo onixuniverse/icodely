@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import DetailView
 
-from courses.mixins import MenuMixin, UserToCourseAccessMixin, course_access
+from courses.mixins import ContextMixin, UserToCourseAccessMixin, course_access
 from courses.models import Homework, Lesson
 from courses_statistics.models import UserStatistics
 from examination.forms import ExamAnswerForm, WrongAnswerByUserForm
@@ -86,7 +86,7 @@ def exam_view(request, exam_id):
     return render(request, "examination/exam.html", context=context)
 
 
-class ExamResultView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
+class ExamResultView(LoginRequiredMixin, UserToCourseAccessMixin, ContextMixin, DetailView):
     model = UserStatistics
     template_name = "examination/exam_result.html"
     context_object_name = "statistics"
@@ -121,7 +121,7 @@ def wrong_answer_view(request):
             exam = form.cleaned_data["exam"]
 
             questions = ExaminationQuestion.objects.filter(exam=exam)
-            wrong_answers = ExaminationAnswer.objects.filter(question__in=questions, user=user, is_answer_right=0)
+            wrong_answers = ExaminationAnswer.objects.filter(question__in=questions, user=user)
 
         context = {
             "form": form,

@@ -13,58 +13,59 @@
         {{ homework.description }}
     </div>
 
-    <div class="info">
-        <h4>Информация</h4>
-        <ul>
-            <div class="comment">
-                <li>Дедлайн:</li>
-                N/A
-            </div>
-            <br>
-            <div class="comment">
-                <li>Количество баллов:</li>
-                N/A
-            </div>
-            <br>
+        <div class="info">
+            <h4>Информация</h4>
+            <ul>
+<!--                <div class="comment">-->
+<!--                    <li>Дедлайн:</li>-->
+<!--                    N/A-->
+<!--                </div>-->
+                <br>
+                <div class="comment">
+                    <li>Максимальное количество баллов:</li>
+                    {{ exam_max_result|add:homework.homework_max_result }}
+                </div>
+                <br>
 
-        </ul>
-    </div>
-
-    {% if homework.homework_file %}
-    <form action="{% url 'courses:homework' course_id lesson.id homework.id %}" autocomplete="off" enctype="multipart/form-data"
-          method="POST">
-        {% csrf_token %}
-        <div class="loads_btn">
-            <h4>Файлы к работе</h4>
-            <div class="warning">Внимание! При скачивании задания, вы начинаете его выполнение.</div>
-            <div class="loads_btn_container">
-
-                <a href="{{ homework.homework_file.url }}" target="_blank">
-                    <div class="load__file-button">
-                        <span class="file_ico"><img class="picto" src="{% static 'images/download.png' %}"></span>
-                        Скачать задание
-                    </div>
-                </a>
-
-                <!--                    <input type="file" name="homework_upload_file" id="id_homework_upload_file" class="download download__file">-->
-                <!--                    <label class="download__file-wrapper" for="id_homework_upload_file">-->
-                <!--                        <div class="load__file-button">-->
-                <!--                            <span class="file_ico"><img class="picto" src="{% static 'images/upload.png' %}"></span>-->
-                <!--                            Загрузить файл-->
-                <!--                        </div>-->
-                <!--                        <div class="download__file-list"></div>-->
-                <!--                    </label>-->
-            </div>
+            </ul>
         </div>
-    </form>
-    {% endif %}
+
+<!--    {% if homework.homework_file %}-->
+<!--    <form action="{% url 'courses:homework' course_id lesson.id homework.id %}" autocomplete="off" enctype="multipart/form-data" method="POST">-->
+<!--        {% csrf_token %}-->
+<!--        <div class="loads_btn">-->
+<!--            <h4>Файлы к работе</h4>-->
+<!--            <div class="warning">Внимание! При скачивании задания, вы начинаете его выполнение.</div>-->
+<!--            <div class="loads_btn_container">-->
+
+<!--                <a href="{{ homework.homework_file.url }}" target="_blank">-->
+<!--                    <div class="load__file-button">-->
+<!--                        <span class="file_ico"><img class="picto" src="{% static 'images/download.png' %}"></span>-->
+<!--                        Скачать задание-->
+<!--                    </div>-->
+<!--                </a>-->
+
+<!--                <input class="download download__file" id="id_homework_upload_file" name="homework_upload_file"-->
+<!--                       type="file" accept="application/pdf,image/png,image/jpeg,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,application/zip">-->
+<!--                <label class="download__file-wrapper" for="id_homework_upload_file">-->
+<!--                    <div class="load__file-button">-->
+<!--                        <span class="file_ico"><img class="picto" src="{% static 'images/upload.png' %}"></span>-->
+<!--                        Сдать решение-->
+<!--                    </div>-->
+<!--                    <div class="download__file-list"></div>-->
+<!--                </label>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <button type="submit">Отправить</button>-->
+<!--    </form>-->
+<!--    {% endif %}-->
 
     {% if homework.exam %}
     <div class="exam_btn">
         <h4>Тестовое задание</h4>
         <div class="warning">Тестовое задание входит в состав домашнего задания!</div>
         <nav class="container_buttons">
-            {% if statistics.exam_attempts < exam_max_attempts %}
+            {% if statistics.exam_attempts < exam.max_attempts %}
             <a href="{% url 'examination:exam' homework.exam.id %}">
                 <button type="button">Решить тест</button>
             </a>
@@ -113,7 +114,9 @@
     <a href="{% url 'courses:lesson' course_id lesson.id %}">
         <button>Назад</button>
     </a>
-    <!--        <button type="submit">Сдать работу</button>-->
+    {% if homework.homework_file %}
+    <button type="submit">Сдать работу</button>
+    {% endif %}
 </nav>
 {% endblock content %}
 <script src="{% static 'js/upload_files.js' %}"></script>

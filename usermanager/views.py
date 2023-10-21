@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
-from courses.mixins import MenuMixin
+from courses.mixins import ContextMixin
 from usermanager.forms import UserRegistrationForm, UserLoginForm, ProfileUpdateForm
 from usermanager.models import CustomUser
 
@@ -12,7 +12,7 @@ TITLE = "icodely"
 TITLE_WITH_DOT = " • " + TITLE
 
 
-class RegistrationUser(MenuMixin, CreateView):
+class RegistrationUser(ContextMixin, CreateView):
     """User registration page"""
     form_class = UserRegistrationForm
     template_name = "usermanager/registration.html"
@@ -38,7 +38,7 @@ class RegistrationUser(MenuMixin, CreateView):
         return handler(request, *args, **kwargs)
 
 
-class LoginUser(MenuMixin, LoginView):
+class LoginUser(ContextMixin, LoginView):
     """User login page"""
     form_class = UserLoginForm
     template_name = "usermanager/login.html"

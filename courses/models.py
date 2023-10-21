@@ -34,7 +34,7 @@ class Course(models.Model):
         verbose_name_plural = "Курсы"
 
     def get_absolute_url(self):
-        return reverse("course", kwargs={'course_id': self.pk})
+        return reverse("courses:course", kwargs={'course_id': self.pk})
 
     def __str__(self):
         return "%s" % self.title
@@ -61,8 +61,8 @@ class Homework(models.Model):
         verbose_name_plural = "Домашние работы"
 
     def get_absolute_url(self):
-        return reverse("homework", kwargs={'homework_id': self.pk, "lesson_id": self.lesson.id,
-                                           "course_id": self.lesson.course.id})
+        return reverse("courses:homework", kwargs={'homework_id': self.pk, "lesson_id": self.lesson.id,
+                                                   "course_id": self.lesson.course.id})
 
     def __str__(self):
         return "%s" % self.title
@@ -85,7 +85,7 @@ class Lesson(models.Model):
         verbose_name_plural = "Уроки"
 
     def get_absolute_url(self):
-        return reverse("lesson", kwargs={'lesson_id': self.pk, 'course_id': self.course.id})
+        return reverse("courses:lesson", kwargs={'lesson_id': self.pk, 'course_id': self.course.id})
 
     def __str__(self):
         return "%s" % self.title
@@ -107,7 +107,7 @@ class InviteUrl(models.Model):
         verbose_name_plural = "Приглашения"
 
     def get_absolute_url(self):
-        return reverse("invite", kwargs={"url_uuid": self.pk})
+        return reverse("courses:invite", kwargs={"url_uuid": self.pk})
 
     def __str__(self):
         return "%s" % self.invite_uuid

@@ -5,18 +5,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 
 from courses_statistics.forms import UploadHomeworkFile
 from courses_statistics.models import UserStatistics
-from .mixins import MenuMixin, UserToCourseAccessMixin
+from examination.models import ExaminationQuestion
+from .mixins import ContextMixin, UserToCourseAccessMixin
 from .models import Course, Lesson, UserToCourse, InviteUrl, Deadlines, Homework
 
 TITLE = "icodely"
 TITLE_WITH_DOT = " • " + TITLE
 
 
-class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
+class AllCoursesListView(LoginRequiredMixin, ContextMixin, ListView):
     model = Course
     template_name = "courses/courses_list.html"
     context_object_name = "courses"
@@ -32,7 +33,7 @@ class AllCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
         return Course.objects.filter(is_available=True).select_related("author")
 
 
-class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
+class MyCoursesListView(LoginRequiredMixin, ContextMixin, ListView):
     model = Course
     template_name = "courses/my_courses.html"
     context_object_name = "courses"
@@ -66,7 +67,7 @@ class MyCoursesListView(LoginRequiredMixin, MenuMixin, ListView):
         return available_courses
 
 
-class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
+class AboutCourseDetailView(LoginRequiredMixin, ContextMixin, DetailView):
     model = Course
     template_name = "courses/about_course.html"
     context_object_name = "course"
@@ -82,7 +83,7 @@ class AboutCourseDetailView(LoginRequiredMixin, MenuMixin, DetailView):
         return Course.objects.get(id=self.kwargs['course_id'])
 
 
-class CourseDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
+class CourseDetailView(LoginRequiredMixin, UserToCourseAccessMixin, ContextMixin, DetailView):
     model = Course
     template_name = "courses/course.html"
     context_object_name = "course"
@@ -108,7 +109,7 @@ class CourseDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, D
         return Course.objects.get(id=self.kwargs['course_id'])
 
 
-class LessonDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
+class LessonDetailView(LoginRequiredMixin, UserToCourseAccessMixin, ContextMixin, DetailView):
     model = Lesson
     template_name = "courses/lesson.html"
     context_object_name = "lesson"
@@ -134,8 +135,9 @@ class LessonDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, D
         return Lesson.objects.get(id=self.kwargs['lesson_id'])
 
 
-class HomeworkDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin, DetailView):
+class HomeworkDetailView(LoginRequiredMixin, UserToCourseAccessMixin, ContextMixin, UpdateView):
     model = Homework
+    form_class = UploadHomeworkFile
     template_name = "courses/homework.html"
     context_object_name = "homework"
 
@@ -150,23 +152,23 @@ class HomeworkDetailView(LoginRequiredMixin, UserToCourseAccessMixin, MenuMixin,
             user_statistics.save()
 
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=str(kwargs['object']) + TITLE_WITH_DOT,
+        c_def = self.get_user_context(title=str(self.object.title) + TITLE_WITH_DOT,
                                       statistics=user_statistics,
-                                      exam_max_attempts=kwargs["object"].exam.max_attempts,
+                                      exam=self.object.exam,
+                                      exam_max_result=len(ExaminationQuestion.objects.filter(exam=self.object.exam)),
                                       course_id=lesson.course.id,
-                                      lesson=lesson,
-                                      form=UploadHomeworkFile(self.request.POST, self.request.FILES))
+                                      lesson=lesson)
         return dict(list(context.items()) + list(c_def.items()))
 
     def post(self, request, *args, **kwargs):
-        return redirect("courses:homework", kwargs['course_id'], kwargs["lesson_id"], kwargs["homework_id"])
+        return super(HomeworkDetailView, self).post(request, **kwargs)
 
     def get_object(self, queryset=None):
         return Homework.objects.get(id=self.kwargs["homework_id"])
 
 
 # Deadlines
-class DeadlineListView(LoginRequiredMixin, MenuMixin, ListView):
+class DeadlineListView(LoginRequiredMixin, ContextMixin, ListView):
     model = Deadlines
     template_name = "courses/deadlines.html"
 

@@ -1,0 +1,16 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+
+{% block links %}
+{% endblock links %}
+
+{% block content %}
+
+<div class="content">
+    {% with max_stat="Asd" %}
+    {% for stat in statistics %}
+        {{ stat }} <br>
+    {% endfor %}
+    {{ max_stat }}
+</div>
+{% endblock content %}

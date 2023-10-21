@@ -10,18 +10,9 @@ menu = [{'text': 'Главная', 'url_name': 'index'},
         {'text': 'Выйти', 'url_name': 'logout'}]
 
 
-class MenuMixin:
+class ContextMixin:
     def get_user_context(self, **kwargs):
         context = kwargs
-        user_menu = menu.copy()
-        # if not self.request.user.is_authenticated:
-        #     user_menu.pop(1)
-        #     user_menu.pop(3)
-        # else:
-        #     user_menu.pop(2)
-        #     user_menu.pop(2)
-
-        context['menu'] = user_menu
 
         return context
 

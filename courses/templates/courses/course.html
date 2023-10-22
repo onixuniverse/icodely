@@ -14,11 +14,11 @@
             <div class="wrapper_step">
                 <div class="number_step">Шаг {{ forloop.counter }}</div>
             </div>
-            <div class="background_course">
-                <div class="name">{{ lesson.title }}</div>
-                <div class="about_step">{{ lesson.short_description }}</div>
+            <div class="background_course {{ course.backplate_color }}">
+                <div class="name">{{ lesson.title|truncatechars:38 }}</div>
+                <div class="about_step">{{ lesson.short_description|truncatechars:68 }}</div>
                 <div class="wrapper_status">
-                    <div class="status {% if stats.status == 'В работе' %}in_progress{% elif stats.status == 'Не доступен' %}unavailable{% else %}done{% endif %}">
+                    <div class="status {% if stats.status == 'Выполняется' %}in_progress{% elif stats.status == 'Не доступен' %}unavailable{% elif stats.status == 'Выполнено' %}done{% else %}available{% endif %}">
                         {% if stats %}
                             {{ stats.status }}
                         {% else %}
@@ -34,4 +34,6 @@
         {% endfor %}
     </section>
 </div>
+
+<script src="{% static 'js/btn_switcher.js' %}"></script>
 {% endblock content %}

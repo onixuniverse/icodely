@@ -11,30 +11,26 @@
         <h2>Регистрация</h2>
         {% for field in form.visible_fields %}
         {% if not forloop.last %}
-
         <div class="input-group">
-
             {{ field }}
             {{ field.label_tag }}
-
             {% if field.name == 'username' %}
             <span class="icon">
-                            <i class="fa-regular fa-user"></i>
-                        </span>
+                <i class="fa-regular fa-user"></i>
+            </span>
             {% elif field.name == 'email' %}
             <span class="icon">
-                            <i class="fa-regular fa-envelope"></i>
-                        </span>
+                <i class="fa-regular fa-envelope"></i>
+            </span>
             {% elif field.name == 'password1' %}
             <span class="icon" id="toggle_password1">
-                            <i class="far fa-eye-slash"></i>
-                        </span>
+                <i class="far fa-eye-slash"></i>
+            </span>
             {% elif field.name == 'password2' %}
             <span class="icon" id="toggle_password2">
-                            <i class="far fa-eye-slash"></i>
-                        </span>
+                <i class="far fa-eye-slash"></i>
+            </span>
             {% endif %}
-
             <span class="line"></span>
         </div>
         {{ field.errors }}
@@ -45,6 +41,11 @@
             <p>Уже есть аккаунт? <a href="{% url 'usermanager:login' %}">Войти</a></p>
         </div>
         {{ form.captcha }}
+        <div class="approval">
+            <a href="#">
+                Нажимая на кнопку, соглашаюсь с условиями обработки данных
+            </a>
+        </div>
     </form>
 </div>
 {% endblock login_form %}

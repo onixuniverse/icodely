@@ -39,7 +39,7 @@ form h2 {
 
 .input-group input{
     position: relative;
-    width: 100%;
+    width: 290px;
     padding: 20px 10px 13px;
     color: white;
     background: transparent;
@@ -62,12 +62,13 @@ form h2 {
     font-weight: 500;
 }
 
-.input-group input:valid ~ label, 
+.input-group input:valid ~ label,
 .input-group input:focus ~ label{
     color: rgb(134, 134, 134);
     transform: translateX(0) translateY(-34px);
     font-size: 12px;
 }
+
 
 .input-group .icon{
     position: absolute;
@@ -82,13 +83,14 @@ form h2 {
     align-items: center;
     justify-content: center;
     transition: 0.3s ease;
+    z-index: 999;
 }
 
 .input-group .icon .far{
     cursor: pointer;
 }
 
-.input-group input:valid ~ .icon, 
+.input-group input:valid ~ .icon,
 .input-group input:focus ~ .icon{
     color: white;
 }
@@ -115,13 +117,14 @@ form h2 {
     justify-content: space-between;
 }
 
-.check label,
-.check a{
+.check label, .check a{
     margin: 20px 0px;
     font-size: 15px;
     color: black;
     cursor: pointer;
     text-decoration: none;
+    text-align: center;
+    padding-left: 20px;
 }
 
 .check label {
@@ -129,7 +132,6 @@ form h2 {
     align-items: center;
     color: hsl(0, 72%, 54%);
     position: relative;
-    padding-left: 20px;
 }
 
 .check label input{
@@ -150,6 +152,7 @@ form h2 {
     color: white;
     position: absolute;
     top: 50%;
+    border: 1px red solid;
     transform: translateY(-50%);
 }
 
@@ -160,6 +163,25 @@ form h2 {
 
 .check a{
     text-decoration: none;
+}
+
+.text{
+    margin-left: 3px;
+}
+
+.approval{
+    display: flex;
+    justify-content: space-between;
+    width: 320px;
+}
+
+.approval a{
+    margin-top: 20px;
+    font-size: 13px;
+    color: hsl(0, 72%, 54%);
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
 }
 
 form button{
@@ -186,19 +208,18 @@ form button{
     font-weight: 500;
 }
 
-.register p a {
+.register p a, .check a{
     text-decoration: none;
     color: hsl(0, 72%, 54%);;
 }
 
-.check a:hover{
+.check a:hover, .approval a:hover{
     text-decoration: underline;
 }
 
 .register p a:hover {
     text-decoration: underline;
 }
-
 
 .wrapper_reg {
     width: 400px;
@@ -225,7 +246,8 @@ ul{
     gap: 5px;
 }
 
-@media (max-width: 400px) { 
+
+@media (max-width: 400px) {
     .wrapper_log{
         width: 310px;
     }
@@ -237,6 +259,9 @@ ul{
     .input-group{
         width: 270px;
     }
+    .input-group input{
+        width: 240px;
+    }
 
     ul{
         width: 270px;
@@ -244,7 +269,7 @@ ul{
     }
 }
 
-@media (max-width: 300px) { 
+@media (max-width: 300px) {
     .wrapper_log{
         width: 250px;
     }
@@ -255,6 +280,10 @@ ul{
 
     .input-group{
         width: 230px;
+    }
+
+    .input-group input{
+        width: 200px;
     }
 
     ul{
@@ -271,7 +300,3 @@ ul{
         font-size: 20px;
     }
 }
-
-
-
-

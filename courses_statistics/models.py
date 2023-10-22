@@ -34,7 +34,7 @@ class UserStatistics(models.Model):
                 self.is_written_homework = True
 
         if self.is_lesson_opened or self.is_homework_complete or self.is_exam_complete:
-            self.status = "В работе"
+            self.status = "Выполняется"
 
             if not self.is_homework and self.is_lesson_opened:
                 self.status = "Выполнено"

@@ -9,7 +9,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("exams/", include("examination.urls", namespace="examination")),
     path("profile/", include("usermanager.urls", namespace="usermanager")),
-    path("statistics/", include("courses_statistics.urls", namespace="statistics")),
 
     path('cookies/', include('cookie_consent.urls')),
 ]

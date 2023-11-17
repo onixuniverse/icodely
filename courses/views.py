@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, UpdateView
 
@@ -213,11 +213,6 @@ def invite_redirect(request):
         new_access_to_course.save()
 
         return HttpResponseRedirect(reverse("courses:course", args=[invite.course.id]))
-
-
-def to_courses_page(request):
-    """Redirect to courses page"""
-    return HttpResponseRedirect(reverse("courses"))
 
 
 def index_page(request):

@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'mathfilters',
     'captcha',
 
+    'rest_framework',
+
     'debug_toolbar',
 ]
 

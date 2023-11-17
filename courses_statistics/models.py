@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from courses.models import Lesson
 from usermanager.models import CustomUser
@@ -37,7 +38,6 @@ class UserStatistics(models.Model):
             self.status = "Выполняется"
 
             if not self.is_homework and self.is_lesson_opened:
-                self.status = "Выполнено"
                 self.is_complete = True
 
         if self.is_written_homework:
@@ -46,20 +46,18 @@ class UserStatistics(models.Model):
             if self.is_homework_checked:
                 self.status = "Задание выполнено"
 
-        if ((self.is_homework_has_exam and self.is_exam_complete) and
-                (self.is_written_homework and self.is_homework_checked)):
-            self.status = "Выполнено"
+        if (((self.is_homework_has_exam and self.is_exam_complete) and (self.is_written_homework and self.is_homework_checked)) or
+                (not self.is_homework_has_exam and (self.is_written_homework and self.is_homework_checked)) or
+                ((self.is_homework_has_exam and self.is_exam_complete) and not self.is_written_homework)):
             self.is_complete = True
 
-        if not self.is_homework_has_exam and (self.is_written_homework and self.is_homework_checked):
+        if self.is_complete:
             self.status = "Выполнено"
-            self.is_complete = True
-
-        if (self.is_homework_has_exam and self.is_exam_complete) and not self.is_written_homework:
-            self.status = "Выполнено"
-            self.is_complete = True
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("courses_statistics:user_stats", kwargs={'statistics_id': self.pk})
 
     class Meta:
         verbose_name = "Статистика"

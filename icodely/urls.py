@@ -5,10 +5,12 @@ from django.urls import path, include
 from icodely import settings
 
 urlpatterns = [
-    path("", include("courses.urls", namespace="courses")),
+    path("", include("base.urls", namespace="base")),
+    path("courses/", include("courses.urls", namespace="courses")),
     path("admin/", admin.site.urls),
     path("exams/", include("examination.urls", namespace="examination")),
     path("profile/", include("usermanager.urls", namespace="usermanager")),
+    # path("statistics/", include("courses_statistics.urls", namespace="statistics")),
 
     path('cookies/', include('cookie_consent.urls')),
 ]

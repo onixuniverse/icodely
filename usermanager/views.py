@@ -72,7 +72,7 @@ class LoginUser(ContextMixin, LoginView):
             handler = self.http_method_not_allowed
 
         if request.user.is_authenticated:
-            handler = HttpResponseRedirect(reverse_lazy("courses:index"))
+            handler = HttpResponseRedirect(reverse_lazy("base:index"))
 
             return handler
 
@@ -83,7 +83,7 @@ class LogoutUser(LoginRequiredMixin, LogoutView):
     login_url = reverse_lazy("usermanager:login")
 
     def get_success_url(self):
-        return reverse("courses:index")
+        return reverse("base:index")
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):

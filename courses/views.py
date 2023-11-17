@@ -215,11 +215,6 @@ def invite_redirect(request):
         return HttpResponseRedirect(reverse("courses:course", args=[invite.course.id]))
 
 
-def index_page(request):
-    """Render a main page"""
-    return render(request, "courses/index.html", {"title": TITLE})
-
-
 # Errors handler
 def page_forbidden_403(request, exception):
     context = {

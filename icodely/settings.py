@@ -21,6 +21,7 @@ INTERNAL_IPS = [
 ]
 
 INSTALLED_APPS = [
+    'rest_framework',
     'usermanager',
     'cookie_consent',
     'jazzmin',
@@ -30,13 +31,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'base',
     'courses',
     'examination',
     'courses_statistics',
     'mathfilters',
     'captcha',
 
-    'rest_framework',
 
     'debug_toolbar',
 ]

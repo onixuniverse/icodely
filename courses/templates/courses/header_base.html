@@ -1,10 +1,10 @@
 {% load static %}
 
 <header class="common_header">
-    <a class="logo_link" href="{% url 'courses:index' %}"><img class="logo" src="{% static 'images/logo.png' %}"></a>
+    <a class="logo_link" href="{% url 'base:index' %}"><img class="logo" src="{% static 'images/logo.png' %}"></a>
 
     <nav class="nav-links">
-        <a class="nav_btn_header" href="{% url 'courses:index' %}">Главная
+        <a class="nav_btn_header" href="{% url 'base:index' %}">Главная
             <div class="line"></div>
         </a>
         <a class="nav_btn_header" href="{% url 'courses:all_courses' %}">Все курсы

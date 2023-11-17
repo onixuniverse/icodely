@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="ru">
 <head>
-    {% include 'courses/analytics.html' %}
+    {% include 'base/analytics.html' %}
 
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     <link href="{% static 'css/transform.css' %}" rel="stylesheet">
@@ -93,7 +93,7 @@
 <div class="page">
 
     <header class="common_header">
-        <a class="logo_link" href="{% url 'courses:index' %}"><img class="logo"
+        <a class="logo_link" href="{% url 'base:index' %}"><img class="logo"
                                                                    src="{% static 'images/logo.png' %}"></a>
     </header>
 

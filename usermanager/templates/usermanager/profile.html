@@ -18,12 +18,12 @@
         <form action="{% url 'usermanager:profile' %}" class="user_data" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="ava_container">
-                <div class="user_avatar">
-                    <img alt="{{ user.avatar }}" class="avatar" src="{{ user.avatar.url }}">
-                    <label for="id_avatar" class="custom-avatar-upload" style="position:absolute;display: inline-block;padding: 64px 64px;cursor: pointer;">
-                        <input type="file" name="avatar" accept="image/png,image/jpeg,.jpg" id="id_avatar" style="display: none;">
-                    </label>
-                </div>
+                <input type="file" id="upload_avatar" name="avatar" accept="image/png,image/jpeg,.jpg">
+                <label for="upload_avatar" class="user_avatar">
+                    <div class="background_effect"></div>
+                    <div class="background_effect_text">Загрузить</div>
+                    <img id="my_avatar" class="avatar" alt="{{ user.avatar }}"  src="{{ user.avatar.url }}">
+                </label>
                 <div class="name_id_container">
                     <div class="user_name">
                         {% if user.first_name or user.last_name %}

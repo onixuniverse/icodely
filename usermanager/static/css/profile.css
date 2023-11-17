@@ -59,12 +59,15 @@
     width: 125px;
     height: 125px;
     border-radius: 100%;
+    background-color: rgb(175, 175, 175);
     background: black;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     border: none;
+    outline: none;
+    transition: 0.2s ease all;
 }
 
 .user_name{
@@ -86,7 +89,7 @@
     position: relative;
     width: 100%;
     padding: 13px 10px;
-    color: black;   
+    color: black;
     border: none;
     outline: none;
     font-size: 16px;
@@ -94,7 +97,7 @@
     letter-spacing: 0.5px;
 }
 
-.input-group label {   
+.input-group label {
     font-size: 15px;
     color: black;
     letter-spacing: 0.5px;
@@ -113,18 +116,52 @@ form button{
     border-radius: 15px;
     font-size: 15px;
     font-weight: 500;
-    cursor: pointer;   
+    cursor: pointer;
 }
 
 .exit{
     position: absolute;
     right: 0%;
     top: 0%;
-    width: 100px;
-    height: 35px;
+    width: 90px;
+    height: 40px;
     border-radius: 10px;
     color: white;
     margin: 10px 10px;
+}
+
+/*Загрузка авы*/
+input[type="file"] {
+    display: none;
+}
+
+.user_avatar .background_effect{
+    position: absolute;
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    opacity: 0;
+    transition: 0.2s ease all;
+    background-color: rgb(0, 0, 0);
+}
+
+.user_avatar .background_effect_text{
+    font-size: 15px;
+    position: absolute;
+    color: white;
+    opacity: 0;
+    z-index: 9999;
+    transition: 0.2s ease all;
+}
+
+.user_avatar:hover > .background_effect{
+    opacity: 0.65;
+}
+
+.user_avatar:hover > .background_effect_text{
+    opacity: 1;
 }
 
 
@@ -138,9 +175,14 @@ form button{
         width: 245px;
     }
 
-    .user_avatar{
+    .user_avatar,
+    .user_avatar .background_effect{
         width: 100px;
         height: 100px;
+    }
+
+    .user_avatar .background_effect_text{
+        font-size: 13px;
     }
 }
 
@@ -174,12 +216,21 @@ form button{
     }
 
     .exit{
-        width: 90px;
-        margin: 8px 8px;
+        width: 85px;
+        height: 35px;
+        font-size: 13px;
     }
 
     .content{
         margin: 0px auto auto auto;
+    }
+
+    .input-group label{
+        font-size: 13px;
+    }
+
+    form button{
+        font-size: 13px;
     }
 
 }
@@ -197,9 +248,14 @@ form button{
         flex-direction: column;
     }
 
-    .user_avatar{
+    .user_avatar,
+    .user_avatar .background_effect{
         width: 125px;
         height: 125px;
+    }
+
+    .user_avatar .background_effect_text{
+        font-size: 15px;
     }
 
     .user_name{
@@ -224,11 +280,6 @@ form button{
         width: 100%;
     }
 
-    .exit{
-        width: 90px;
-        margin: 8px 8px;
-    }
-
     .input_group_container{
         flex-direction: column;
         align-items: flex-start;
@@ -240,6 +291,7 @@ form button{
         width: 100%;
     }
 }
+
 
 @media screen and (max-width: 350px){
     .wrapper_form{
@@ -256,7 +308,8 @@ form button{
         padding: 20px 20px;
     }
 
-    .user_avatar{
+    .user_avatar,
+    .user_avatar .background_effect{
         width: 110px;
         height: 110px;
     }

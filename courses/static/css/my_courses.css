@@ -1,18 +1,22 @@
 .progress{
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin: 13px;
     bottom: 0%;
+    position: absolute;
     width: 201px;
-    height: 20px;
-    background: #D9D9D9;;
+    height: 22px;
     border-radius: 5px;
-    color: black;
-    font-size: 15px;
+    background: linear-gradient(90deg, var(--clr) 0%, var(--clr) 0% var(--i), #D9D9D9 var(--i), #D9D9D9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.progress h2{
+    position: relative;
+    font-size: 15px;
+    font-weight: 500;
+    color: black;
+}
 
 @media (min-width: 370px) and (max-width: 539px) {
     .progress{

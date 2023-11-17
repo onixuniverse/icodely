@@ -57,14 +57,6 @@ class LoginUser(ContextMixin, LoginView):
 
         return dict(list(context.items()) + list(c_def.items()))
 
-    def get_success_url(self):
-        to = "/"
-
-        if self.request.GET:
-            to = self.request.GET["next"] if self.request.GET["next"] != "/logout/" else "/"
-
-        return to
-
     def dispatch(self, request, *args, **kwargs):
         if request.method.lower() in self.http_method_names and not request.user.is_authenticated:
             handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
@@ -72,7 +64,7 @@ class LoginUser(ContextMixin, LoginView):
             handler = self.http_method_not_allowed
 
         if request.user.is_authenticated:
-            handler = HttpResponseRedirect(reverse_lazy("base:index"))
+            handler = HttpResponseRedirect(reverse_lazy("usermanager:profile"))
 
             return handler
 

@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,6 +112,7 @@ USE_I18N = True
 USE_TZ = True
 
 LOGIN_URL = "usermanager:login"
+LOGIN_REDIRECT_URL = reverse_lazy("usermanager:profile")
 
 # SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")

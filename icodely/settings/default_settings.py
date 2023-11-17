@@ -2,16 +2,14 @@ import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
-from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-load_dotenv()
-SECRET_KEY = os.getenv("TOKEN")
+SECRET_KEY = ""
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["icodely.ru", "localhost"]
+ALLOWED_HOSTS = ["localhost"]
 
 # Debug toolbar
 INTERNAL_IPS = [
@@ -114,9 +112,18 @@ USE_TZ = True
 LOGIN_URL = "usermanager:login"
 LOGIN_REDIRECT_URL = reverse_lazy("usermanager:profile")
 
-# SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
-RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_POST = 465
+EMAIL_USE_TLS = False
+EMAIL_USER_SSL = True
+
+EMAIL_HOST_USER = "icodely@yandex.ru"
+EMAIL_HOST_PASSWORD = "srecdegphqywiwbg"
+EMAIL_FROM_EMAIL = "icodely@yandex.ru"
+
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")

@@ -9,33 +9,33 @@
     <form action="{% url 'usermanager:signup' %}" autocomplete="off" id="registerForm" method="POST">
         {% csrf_token %}
         <h2>Регистрация</h2>
-        {% for field in form.visible_fields %}
-        {% if not forloop.last %}
         <div class="input-group">
-            {{ field }}
-            {{ field.label_tag }}
-            {% if field.name == 'username' %}
-            <span class="icon">
-                <i class="fa-regular fa-user"></i>
-            </span>
-            {% elif field.name == 'email' %}
+            <input type="email" name="email" autofocus required id="id_email">
+            <label for="id_email">Электронная почта:</label>
             <span class="icon">
                 <i class="fa-regular fa-envelope"></i>
             </span>
-            {% elif field.name == 'password1' %}
+            <span class="line"></span>
+        </div>
+        {{ form.email.errors }}
+        <div class="input-group">
+            <input type="password" name="password1" required id="id_password1">
+            <label for="id_password1">Пароль:</label>
             <span class="icon" id="toggle_password1">
                 <i class="far fa-eye-slash"></i>
             </span>
-            {% elif field.name == 'password2' %}
+            <span class="line"></span>
+        </div>
+        {{ form.password1.errors }}
+        <div class="input-group">
+            <input type="password" name="password2" required id="id_password2">
+            <label for="id_password2">Подтверждение пароля:</label>
             <span class="icon" id="toggle_password2">
                 <i class="far fa-eye-slash"></i>
             </span>
-            {% endif %}
             <span class="line"></span>
         </div>
-        {{ field.errors }}
-        {% endif %}
-        {% endfor %}
+        {{ form.password2.errors }}
         <button type="submit">Подтвердить</button>
         <div class="register">
             <p>Уже есть аккаунт? <a href="{% url 'usermanager:login' %}">Войти</a></p>

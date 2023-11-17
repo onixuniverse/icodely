@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, \
+    PasswordResetConfirmView, PasswordResetCompleteView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
@@ -87,7 +88,3 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
-
-
-class ChangeUserPassword(LoginRequiredMixin, UpdateView):
-    ...

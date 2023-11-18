@@ -29,7 +29,7 @@
         {{ form.password.errors }}
         <div class="check">
             <label>{{ form.remember_me }}<span class="text">Запомнить меня</span></label>
-            <a href="{% url 'usermanager:reset_password' %}">Забыли пароль?</a>
+            <a href="{% url 'reset_password' %}">Забыли пароль?</a>
         </div>
         <button type="submit">Войти</button>
         <div class="register">

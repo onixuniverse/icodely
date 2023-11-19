@@ -1,7 +1,5 @@
-media/uploads/
 venv/
-./req_dev.txt
-prod_settings.py
+icodely/settings/prod_settings.py
 
 
 # Byte-compiled / optimized / DLL files

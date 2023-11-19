@@ -19,6 +19,7 @@
     flex-direction: row;
     align-items: center;
     gap: 15px;
+    margin-bottom: 15px;
 }
 
 .input_group_container{
@@ -26,7 +27,6 @@
     flex-direction: row;
     align-items: center;
     gap: 30px;
-    margin-top: 30px;
 }
 
 .button_container{
@@ -59,8 +59,7 @@
     width: 125px;
     height: 125px;
     border-radius: 100%;
-    background-color: rgb(175, 175, 175);
-    background: black;
+    background-color: rgb(175 175 175);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,8 +75,8 @@
 }
 
 .input-group{
-    width: 320px;
-    margin-top: 12px;
+    width: 345px;
+    margin-top: 15px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -106,7 +105,7 @@
 }
 
 form button{
-    margin-top: 30px;
+    margin-top: 45px;
     width: 320px;
     height: 44px;
     color: white;

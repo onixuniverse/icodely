@@ -11,7 +11,7 @@ class Course(models.Model):
     title = models.CharField(max_length=63, verbose_name="Название курса")
     short_description = models.CharField(max_length=53, blank=True, null=True, verbose_name="Краткое описание")
     description = models.TextField(max_length=1023, verbose_name="Описание курса", blank=True)
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=CustomUser, verbose_name="Автор курса")
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор курса")
     is_available = models.BooleanField(default=True, verbose_name="Курс доступен сразу?")
     steps = models.PositiveSmallIntegerField(default=0, verbose_name="Количество шагов")
     is_free = models.BooleanField(default=False, verbose_name="Бесплатный курс?")

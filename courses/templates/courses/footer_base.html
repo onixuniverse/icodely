@@ -1,22 +1,20 @@
 {% load static %}
-
 <footer>
-    <div class="footer_nav">
-        <a class="hyperlink">
-            <p>Политика конфиденциальности</p>
-        </a>
-        <a class="hyperlink">
-            <p>&#169; 2023 icodely</p>
-        </a>
-        <a class="hyperlink" href="https://t.me/iteacherma_it" target="_blank">
-            <img class="network_logo" src="{% static 'images/tg.png' %}">
-            <p>/iteacherma_it</p>
-        </a>
-        <a class="hyperlink" href="https://vk.com/iteacherma" target="_blank">
-            <img class="network_logo" src="{% static 'images/vk.png' %}">
-            <p>/iteacherma</p>
-        </a>
-    </div>
+    <nav class="footer_nav">
+        <div class="block_wrapper">
+            <div class="name_block">Правила платформы</div>
+            <a href="" class="hyperlink">Политика обработки персональных данных</a>
+            <a href="" class="hyperlink">Пользовательское соглашение</a>
+        </div>
+
+        <div class="block_wrapper">
+            <div class="name_block">Мы в соцсетях</div>
+            <a href="https://t.me/iteacherma_it" class="hyperlink"><img class="network_logo" src="{% static 'images/tg.png' %}">/iteacherma_it</a>
+            <a href="https://vk.com/iteacherma" class="hyperlink"><img class="network_logo" src="{% static 'images/vk.png' %}">/iteacherma</a>
+        </div>
+    </nav>
+
+    <div class="copy_sign">&#169; 2023 icodely</div>
 
     {% include 'courses/cookies.html' %}
 </footer>

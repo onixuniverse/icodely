@@ -1,5 +1,5 @@
 venv/
-icodely/settings/prod_settings.py
+prod_settings.py
 
 
 # Byte-compiled / optimized / DLL files
